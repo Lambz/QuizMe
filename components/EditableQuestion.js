@@ -13,7 +13,7 @@ export default function EditableQuestion({
     setSelection,
     deleteItem,
 }) {
-    const [selectedIndex, setSelectedIndex] = useState(item.answer);
+    const [selectedIndex, setSelectedIndex] = useState();
     const [question, setQuestion] = useState(item.ques);
     const [option1, setOption1] = useState(item.option1);
     const [option2, setOption2] = useState(item.option2);
@@ -25,9 +25,9 @@ export default function EditableQuestion({
         updater(text);
     };
 
-    const updateSelection = (index) => {
-        setSelection(item.id, index);
-        setSelectedIndex(index);
+    const updateSelection = (option) => {
+        setSelection(item.id, option);
+        setSelectedIndex(option);
     };
     return (
         <View style={styles.container}>
@@ -86,28 +86,28 @@ export default function EditableQuestion({
                     onPress={() => deleteItem(item.id)}
                 />
                 <AntDesign
-                    name={selectedIndex === 1 ? "check" : ""}
+                    name={selectedIndex === option1 ? "check" : ""}
                     size={24}
                     color="green"
-                    onPress={() => updateSelection(1)}
+                    onPress={() => updateSelection(option1)}
                 />
                 <AntDesign
-                    name={selectedIndex === 2 ? "check" : ""}
+                    name={selectedIndex === option2 ? "check" : ""}
                     size={24}
                     color="green"
-                    onPress={() => updateSelection(2)}
+                    onPress={() => updateSelection(option2)}
                 />
                 <AntDesign
-                    name={selectedIndex === 3 ? "check" : ""}
+                    name={selectedIndex === option3 ? "check" : ""}
                     size={24}
                     color="green"
-                    onPress={() => updateSelection(3)}
+                    onPress={() => updateSelection(option3)}
                 />
                 <AntDesign
-                    name={selectedIndex === 4 ? "check" : ""}
+                    name={selectedIndex === option4 ? "check" : ""}
                     size={24}
                     color="green"
-                    onPress={() => updateSelection(4)}
+                    onPress={() => updateSelection(option4)}
                 />
             </View>
         </View>

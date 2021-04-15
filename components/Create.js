@@ -13,8 +13,10 @@ import { detect } from "../networking/Vision";
 import EditableQuestion from "./EditableQuestion";
 import { makeid } from "../Utils";
 import { useFocusEffect } from "@react-navigation/core";
+import { TextInput } from "react-native-gesture-handler";
 export default function Create({ route }) {
     const [questions, setQuestions] = useState([]);
+    const [quizName, setQuizName] = useState("");
 
     const addEmptyQuestion = () => {
         let newQues = {
@@ -23,7 +25,7 @@ export default function Create({ route }) {
             option2: "",
             option3: "",
             option4: "",
-            selectedIndex: 0,
+            answer: "",
             id: makeid(10),
         };
         setQuestions((allQuestions) => [...allQuestions, newQues]);
@@ -118,11 +120,11 @@ export default function Create({ route }) {
         });
     };
 
-    const setSelection = (id, index) => {
+    const setSelection = (id, answer) => {
         setQuestions((allQuestions) => {
             allQuestions = allQuestions.map((ques) => {
                 if (ques.id == id) {
-                    ques.selectedIndex = index;
+                    ques.answer = answer;
                 }
                 return ques;
             });
@@ -152,7 +154,7 @@ export default function Create({ route }) {
                         option2: text[itr + 2],
                         option3: text[itr + 3],
                         option4: text[itr + 4],
-                        selectedIndex: 0,
+                        answer: "",
                         id: makeid(10),
                     };
                     ques.push(newQues);
@@ -201,6 +203,9 @@ export default function Create({ route }) {
 
     const createQuiz = () => {
         let noProb = true;
+        if (quizName == "") {
+            noProb = false;
+        }
         questions.forEach((question) => {
             // console.log("question.answer: ", question.selectedIndex);
             if (
@@ -209,11 +214,39 @@ export default function Create({ route }) {
                 question.option2 == "" ||
                 question.option3 == "" ||
                 question.option4 == "" ||
-                question.selectedIndex == 0
+                question.answer == ""
             ) {
                 noProb = false;
             }
         });
+        if (noProb) {
+            let json = { name: quizName };
+            let ques = [];
+            questions.forEach((question) => {
+                ques.push({
+                    question: question.ques,
+                    options: [
+                        question.option1,
+                        question.option2,
+                        question.option3,
+                        question.option4,
+                    ],
+                    answer: question.answer,
+                });
+            });
+            json["questions"] = ques;
+            console.log("json: ", json);
+        } else {
+            Alert.alert(
+                "Error!",
+                "One of the questions either has an empty field or the answer has not been selected",
+                [
+                    {
+                        text: "Okay",
+                    },
+                ]
+            );
+        }
         // console.log("noProb: ", noProb);
     };
     return (
@@ -238,6 +271,11 @@ export default function Create({ route }) {
                 contentContainerStyle={{ padding: 10 }}
             />
             <View style={{ padding: 10 }}>
+                <TextInput
+                    placeholder="Quiz Name"
+                    style={{ marginBottom: 10, fontSize: 20 }}
+                    onChangeText={setQuizName}
+                />
                 <TouchableOpacity
                     style={{
                         padding: 10,
