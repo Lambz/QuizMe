@@ -8,7 +8,6 @@ import {
     FlatList,
     TouchableOpacity,
 } from "react-native";
-import { Camera } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import { detect } from "../networking/Vision";
 import EditableQuestion from "./EditableQuestion";
@@ -16,7 +15,6 @@ import { makeid } from "../Utils";
 import { useFocusEffect } from "@react-navigation/core";
 export default function Create({ route }) {
     const [questions, setQuestions] = useState([]);
-    // console.log("route: ", route);
 
     const addEmptyQuestion = () => {
         let newQues = {
@@ -200,6 +198,24 @@ export default function Create({ route }) {
             },
         ]);
     };
+
+    const createQuiz = () => {
+        let noProb = true;
+        questions.forEach((question) => {
+            // console.log("question.answer: ", question.selectedIndex);
+            if (
+                question.ques == "" ||
+                question.option1 == "" ||
+                question.option2 == "" ||
+                question.option3 == "" ||
+                question.option4 == "" ||
+                question.selectedIndex == 0
+            ) {
+                noProb = false;
+            }
+        });
+        // console.log("noProb: ", noProb);
+    };
     return (
         <View style={styles.container}>
             {/* <Text>Open up App.js to start working on your app!</Text>
@@ -228,6 +244,7 @@ export default function Create({ route }) {
                         backgroundColor: "#007AFF",
                         borderRadius: 10,
                     }}
+                    onPress={createQuiz}
                 >
                     <Text
                         style={{
