@@ -9,7 +9,10 @@ import Browse from "./Browse";
 import Create from "./Create";
 
 const Tab = createBottomTabNavigator();
-export default function Dashboard() {
+export default function Dashboard({ navigation }) {
+    const changeHeader = (name) => {
+        navigation.setOptions({ title: name });
+    };
     return (
         <NavigationContainer independent={true}>
             <Tab.Navigator>
@@ -46,11 +49,7 @@ export default function Dashboard() {
                 <Tab.Screen
                     name="Create"
                     component={Create}
-                    // initialParams={{
-                    //     stackMoveCallback: stackMoveCallback,
-                    //     setFocusFunction: setFocusFunction,
-                    //     deRegisterFocus: deRegisterFocus,
-                    // }}
+                    initialParams={{ changeHeader: changeHeader }}
                     options={{
                         tabBarLabel: "Create",
                         tabBarIcon: ({ color, size }) => (

@@ -10,7 +10,7 @@ export default function App() {
                 <Stack.Screen
                     name="dashboard"
                     component={Dashboard}
-                    options={{ headerShown: false }}
+                    // options={{ headerShown: false }}
                 />
             </Stack.Navigator>
         </NavigationContainer>
