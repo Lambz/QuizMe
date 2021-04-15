@@ -10,8 +10,9 @@ import Create from "./Create";
 
 const Tab = createBottomTabNavigator();
 export default function Dashboard({ navigation }) {
-    const changeHeader = (name) => {
-        navigation.setOptions({ title: name });
+    const changeHeader = (name, items) => {
+        // console.log(items);
+        navigation.setOptions({ title: name, headerRight: () => items });
     };
     return (
         <NavigationContainer independent={true}>
