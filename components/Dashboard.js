@@ -20,6 +20,7 @@ export default function Dashboard({ navigation }) {
                 <Tab.Screen
                     name="Home"
                     component={Home}
+                    initialParams={{ changeHeader: changeHeader }}
                     options={{
                         tabBarLabel: "Home",
                         tabBarIcon: ({ color, size }) => (

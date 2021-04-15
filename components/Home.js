@@ -1,9 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
-export default function Home() {
+import { useFocusEffect } from "@react-navigation/core";
+import { FlatList } from "react-native-gesture-handler";
+import QuizItem from "./QuizItem";
+export default function Home({ route }) {
+    const [quizes, setQuizes] = useState([
+        {
+            name: "Simple",
+            questions: [
+                {
+                    answer: "Carrot",
+                    options: ["Cabbage", "Carrot", "Tomato", "Raddish"],
+                    question: "What do you like?",
+                },
+                {
+                    answer: "Yes",
+                    options: ["N/A", "Yes", "No", "Maybe"],
+                    question: "Blackerry you like?",
+                },
+            ],
+        },
+    ]);
+    useFocusEffect(
+        React.useCallback(() => {
+            route.params.changeHeader("Home", null);
+            return () => {
+                // route.params.deRegisterFocus();
+            };
+        }, [])
+    );
+    const quizClicked = (quiz) => {
+        console.log(quiz);
+    };
     return (
         <View style={styles.container}>
-            <Text>Open up App.js to start working on your app!</Text>
+            <FlatList
+                data={quizes}
+                renderItem={({ item }) => (
+                    <QuizItem item={item} quizClicked={quizClicked} />
+                )}
+            />
         </View>
     );
 }
@@ -12,7 +48,5 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
     },
 });
