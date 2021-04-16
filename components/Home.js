@@ -31,6 +31,7 @@ export default function Home({ route }) {
     );
     const quizClicked = (quiz) => {
         console.log(quiz);
+        route.params.moveTo("Quiz", { quiz: quiz });
     };
     return (
         <View style={styles.container}>

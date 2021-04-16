@@ -14,13 +14,19 @@ export default function Dashboard({ navigation }) {
         // console.log(items);
         navigation.setOptions({ title: name, headerRight: () => items });
     };
+    const moveTo = (name, params) => {
+        navigation.navigate(name, params);
+    };
     return (
         <NavigationContainer independent={true}>
             <Tab.Navigator>
                 <Tab.Screen
                     name="Home"
                     component={Home}
-                    initialParams={{ changeHeader: changeHeader }}
+                    initialParams={{
+                        changeHeader: changeHeader,
+                        moveTo: moveTo,
+                    }}
                     options={{
                         tabBarLabel: "Home",
                         tabBarIcon: ({ color, size }) => (

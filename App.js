@@ -2,6 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Dashboard from "./components/Dashboard";
+import Quiz from "./components/Quiz";
 const Stack = createStackNavigator();
 export default function App() {
     return (
@@ -11,6 +12,11 @@ export default function App() {
                     name="dashboard"
                     component={Dashboard}
                     // options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="Quiz"
+                    component={Quiz}
+                    options={{ headerShown: false }}
                 />
             </Stack.Navigator>
         </NavigationContainer>
