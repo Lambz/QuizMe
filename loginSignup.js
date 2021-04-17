@@ -8,7 +8,7 @@ import HomeScreen from "./containers/HomeScreen";
  * In this component I am handling the entire application state, but in a real app you should
  * probably use a state management library like Redux or MobX to handle the state (if your app gets bigger).
  */
-export class LoginAnimation extends Component {
+class LoginAnimation extends Component {
     state = {
         isLoggedIn: false, // Is the user authenticated?
         isLoading: false, // Is the user loggingIn/signinUp?

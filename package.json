@@ -9,6 +9,7 @@
     },
     "dependencies": {
         "@google-cloud/vision": "^2.3.1",
+        "@react-native-async-storage/async-storage": "^1.13.0",
         "@react-native-community/masked-view": "0.1.10",
         "@react-navigation/bottom-tabs": "^5.11.9",
         "@react-navigation/native": "^5.9.4",
@@ -29,6 +30,7 @@
         "react-native-reanimated": "~1.13.0",
         "react-native-screens": "~2.15.2",
         "react-native-web": "~0.13.12",
+        "set-cookie-parser": "^2.4.8",
         "unimodules-permissions-interface": "^6.1.0"
     },
     "devDependencies": {
