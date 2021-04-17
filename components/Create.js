@@ -11,12 +11,16 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { detect } from "../networking/Vision";
 import EditableQuestion from "./EditableQuestion";
-import { makeid } from "../Utils";
+import { categories, makeid } from "../Utils";
 import { useFocusEffect } from "@react-navigation/core";
 import { TextInput } from "react-native-gesture-handler";
+import DropDownPicker from "react-native-dropdown-picker";
+import { addQuiz } from "../networking/DatabaseCommunications";
 export default function Create({ route }) {
     const [questions, setQuestions] = useState([]);
     const [quizName, setQuizName] = useState("");
+    const [selectedCategory, SetSelectedCategory] = useState(-1);
+    const [description, setDescription] = useState("");
 
     const addEmptyQuestion = () => {
         let newQues = {
@@ -201,13 +205,19 @@ export default function Create({ route }) {
         ]);
     };
 
+    const createQuizCallback = (json) => {
+        console.log(json);
+    };
+
     const createQuiz = () => {
+        console.log("Selected Category: ", selectedCategory);
         let noProb = true;
-        if (quizName == "") {
+        if (quizName == "" || selectedCategory == -1) {
+            console.log("first false");
             noProb = false;
         }
         questions.forEach((question) => {
-            // console.log("question.answer: ", question.selectedIndex);
+            console.log(question);
             if (
                 question.ques == "" ||
                 question.option1 == "" ||
@@ -216,6 +226,7 @@ export default function Create({ route }) {
                 question.option4 == "" ||
                 question.answer == ""
             ) {
+                console.log("loop false");
                 noProb = false;
             }
         });
@@ -235,7 +246,11 @@ export default function Create({ route }) {
                 });
             });
             json["questions"] = ques;
-            console.log("json: ", json);
+            json["description"] = description;
+            json["typeOfQuiz"] = selectedCategory;
+            json = { quiz: json };
+            console.log(json);
+            addQuiz(json, createQuizCallback);
         } else {
             Alert.alert(
                 "Error!",
@@ -251,8 +266,6 @@ export default function Create({ route }) {
     };
     return (
         <View style={styles.container}>
-            {/* <Text>Open up App.js to start working on your app!</Text>
-            <Button title="Scan" onPress={showOptionsAlert} /> */}
             <FlatList
                 data={questions}
                 renderItem={({ item }) => (
@@ -275,6 +288,35 @@ export default function Create({ route }) {
                     placeholder="Quiz Name"
                     style={{ marginBottom: 10, fontSize: 20 }}
                     onChangeText={setQuizName}
+                    value={quizName}
+                />
+
+                <TextInput
+                    placeholder="Description"
+                    style={{ marginBottom: 10, fontSize: 16 }}
+                    onChangeText={setDescription}
+                    value={description}
+                />
+                <DropDownPicker
+                    items={categories}
+                    containerStyle={{
+                        height: 40,
+                        marginVertical: 5,
+                        zIndex: 10000,
+                    }}
+                    style={{ backgroundColor: "#fafafa", zIndex: 10 }}
+                    itemStyle={{
+                        justifyContent: "flex-start",
+                        zIndex: 10000,
+                    }}
+                    dropDownStyle={{
+                        backgroundColor: "#fafafa",
+                        zIndex: 10000,
+                    }}
+                    onChangeItem={(item) =>
+                        SetSelectedCategory(Number(item.value))
+                    }
+                    zIndex={10000}
                 />
                 <TouchableOpacity
                     style={{

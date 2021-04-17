@@ -84,3 +84,20 @@ export const getCookies = async () => {
         null;
     }
 };
+
+export const categories = [
+    { label: "Generic", value: 0 },
+    { label: "Movies", value: 1 },
+    { label: "Music", value: 2 },
+    { label: "TV", value: 3 },
+    { label: "News & Celebrity", value: 4 },
+    { label: "Toys & Games", value: 5 },
+    { label: "General Knowledge", value: 6 },
+    { label: "Slogan & Business", value: 7 },
+    { label: "Sports", value: 8 },
+    { label: "Geography", value: 9 },
+    { label: "History", value: 10 },
+    { label: "Literature", value: 11 },
+    { label: "Religion", value: 12 },
+    { label: "Science & Math", value: 13 },
+];
