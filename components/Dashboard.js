@@ -10,9 +10,14 @@ import Create from "./Create";
 
 const Tab = createBottomTabNavigator();
 export default function Dashboard({ navigation }) {
-    const changeHeader = (name, items) => {
+    const changeHeader = (name, items, headerShown = true) => {
         // console.log(items);
-        navigation.setOptions({ title: name, headerRight: () => items });
+        navigation.setOptions({
+            title: name,
+            headerRight: () => items,
+            headerShown: headerShown,
+        });
+        // navigation.setOptions({ headerShown: false });
     };
     const moveTo = (name, params) => {
         navigation.navigate(name, params);
@@ -41,11 +46,6 @@ export default function Dashboard({ navigation }) {
                 <Tab.Screen
                     name="Browse"
                     component={Browse}
-                    // initialParams={{
-                    //     stackMoveCallback: stackMoveCallback,
-                    //     setFocusFunction: setFocusFunction,
-                    //     deRegisterFocus: deRegisterFocus,
-                    // }}
                     options={{
                         tabBarLabel: "Browse",
                         tabBarIcon: ({ color, size }) => (
@@ -72,7 +72,10 @@ export default function Dashboard({ navigation }) {
                 <Tab.Screen
                     name="UserTab"
                     component={UserTab}
-                    // initialParams={{ stackMoveCallback: stackMoveCallback }}
+                    initialParams={{
+                        changeHeader: changeHeader,
+                        moveTo: moveTo,
+                    }}
                     options={{
                         tabBarLabel: "User",
                         tabBarIcon: ({ color, size }) => (

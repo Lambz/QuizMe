@@ -126,6 +126,9 @@ export const categories = [
 ];
 
 export const getRandomImage = (index) => {
+    if (index > images.length) {
+        index = getRandomInt(0, images.length - 1);
+    }
     return images[index][getRandomInt(0, images[index].length - 1)];
 };
 
