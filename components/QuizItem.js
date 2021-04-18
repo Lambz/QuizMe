@@ -18,11 +18,11 @@ export default function QuizItem({ item, quizClicked }) {
             onPress={() => quizClicked(item)}
         >
             <Image
-                source={getRandomImage()}
+                source={getRandomImage(item.typeOfQuiz)}
                 style={{
                     resizeMode: "cover",
-                    maxHeight: 300,
-                    maxWidth: windowWidth - 20,
+                    height: 250,
+                    width: windowWidth - 20,
                     borderRadius: 10,
                     backgroundColor: "#0000ff",
                 }}

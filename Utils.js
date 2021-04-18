@@ -16,16 +16,117 @@ export function makeid(length) {
 }
 
 export const images = [
-    require("./assets/1.jpg"),
-    require("./assets/2.jpg"),
-    require("./assets/3.jpg"),
-    require("./assets/4.jpeg"),
-    require("./assets/5.jpg"),
-    require("./assets/6.jpg"),
+    [
+        require("./assets/generic/1.jpg"),
+        require("./assets/generic/2.jpg"),
+        require("./assets/generic/3.jpg"),
+        require("./assets/generic/4.jpeg"),
+        require("./assets/generic/5.jpg"),
+        require("./assets/generic/6.jpg"),
+    ],
+    [
+        require("./assets/movies/1.jpg"),
+        require("./assets/movies/2.jpg"),
+        require("./assets/movies/3.jpg"),
+        require("./assets/movies/4.jpg"),
+    ],
+    [
+        require("./assets/music/1.jpg"),
+        require("./assets/music/2.jpeg"),
+        require("./assets/music/3.jpg"),
+        require("./assets/music/4.jpg"),
+        require("./assets/music/5.jpg"),
+    ],
+    [
+        require("./assets/TV/1.jpg"),
+        require("./assets/TV/2.webp"),
+        require("./assets/TV/3.webp"),
+    ],
+    [
+        require("./assets/news/1.jpg"),
+        require("./assets/news/2.jpg"),
+        require("./assets/news/3.jpg"),
+        require("./assets/news/4.jpg"),
+        require("./assets/news/5.jpg"),
+    ],
+    [
+        require("./assets/games/1.jpg"),
+        require("./assets/games/2.jpg"),
+        require("./assets/games/3.jpg"),
+        require("./assets/games/4.jpg"),
+        require("./assets/games/5.jpg"),
+    ],
+    [
+        require("./assets/gk/1.jpg"),
+        require("./assets/gk/2.jpg"),
+        require("./assets/gk/3.jpeg"),
+    ],
+    [
+        require("./assets/business/1.jpg"),
+        require("./assets/business/2.jpeg"),
+        require("./assets/business/3.png"),
+    ],
+    [
+        require("./assets/sports/1.gif"),
+        require("./assets/sports/2.jpg"),
+        require("./assets/sports/3.jpg"),
+        require("./assets/sports/4.jpg"),
+    ],
+    [
+        require("./assets/geography/1.jpg"),
+        require("./assets/geography/2.jpg"),
+        require("./assets/geography/3.jpg"),
+        require("./assets/geography/4.jpeg"),
+        require("./assets/geography/5.jpeg"),
+    ],
+    [
+        require("./assets/history/1.jpg"),
+        require("./assets/history/2.jpg"),
+        require("./assets/history/3.jpg"),
+        require("./assets/history/4.jpg"),
+        require("./assets/history/5.jpg"),
+    ],
+    [
+        require("./assets/literature/1.jpg"),
+        require("./assets/literature/2.jpg"),
+        require("./assets/literature/3.jpg"),
+        require("./assets/literature/4.webp"),
+        require("./assets/literature/5.webp"),
+    ],
+    [
+        require("./assets/religion/1.jpg"),
+        require("./assets/religion/2.jpg"),
+        require("./assets/religion/3.jpeg"),
+        require("./assets/religion/4.jpg"),
+    ],
+    [
+        require("./assets/science/1.jpg"),
+        require("./assets/science/2.jpg"),
+        require("./assets/science/3.jpg"),
+        require("./assets/science/4.jpg"),
+        require("./assets/science/5.jpg"),
+    ],
 ];
 
-export const getRandomImage = () => {
-    return images[getRandomInt(0, images.length - 1)];
+export const categories = [
+    { label: "Generic", value: 0 },
+    { label: "Movies", value: 1 },
+    { label: "Music", value: 2 },
+    { label: "TV", value: 3 },
+    { label: "News & Celebrity", value: 4 },
+    { label: "Toys & Games", value: 5 },
+    { label: "General Knowledge", value: 6 },
+    { label: "Slogan & Business", value: 7 },
+    { label: "Sports", value: 8 },
+    { label: "Geography", value: 9 },
+    { label: "History", value: 10 },
+    { label: "Literature", value: 11 },
+    { label: "Religion", value: 12 },
+    { label: "Science & Math", value: 13 },
+];
+
+export const getRandomImage = (index) => {
+    return images[index][getRandomInt(0, images[index].length - 1)];
 };
 
 export function getRandomInt(min, max) {
@@ -71,23 +172,6 @@ export const getCookies = async () => {
         null;
     }
 };
-
-export const categories = [
-    { label: "Generic", value: 0 },
-    { label: "Movies", value: 1 },
-    { label: "Music", value: 2 },
-    { label: "TV", value: 3 },
-    { label: "News & Celebrity", value: 4 },
-    { label: "Toys & Games", value: 5 },
-    { label: "General Knowledge", value: 6 },
-    { label: "Slogan & Business", value: 7 },
-    { label: "Sports", value: 8 },
-    { label: "Geography", value: 9 },
-    { label: "History", value: 10 },
-    { label: "Literature", value: 11 },
-    { label: "Religion", value: 12 },
-    { label: "Science & Math", value: 13 },
-];
 
 export const showGeneralError = (title, message) => {
     Alert.alert(title, message, [
