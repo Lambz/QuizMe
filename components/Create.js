@@ -11,7 +11,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { detect } from "../networking/Vision";
 import EditableQuestion from "./EditableQuestion";
-import { categories, makeid } from "../Utils";
+import { categories, makeid, showGeneralError } from "../Utils";
 import { useFocusEffect } from "@react-navigation/core";
 import { TextInput } from "react-native-gesture-handler";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -19,7 +19,7 @@ import { addQuiz } from "../networking/DatabaseCommunications";
 export default function Create({ route }) {
     const [questions, setQuestions] = useState([]);
     const [quizName, setQuizName] = useState("");
-    const [selectedCategory, SetSelectedCategory] = useState(-1);
+    const [selectedCategory, setSelectedCategory] = useState(-1);
     const [description, setDescription] = useState("");
 
     const addEmptyQuestion = () => {
@@ -206,14 +206,22 @@ export default function Create({ route }) {
     };
 
     const createQuizCallback = (json) => {
-        console.log(json);
+        if (json["Message"] == undefined) {
+            setQuestions([]);
+            setQuizName("");
+            setSelectedCategory(-1);
+            setDescription("");
+        } else {
+            showGeneralError(
+                "Error!",
+                "There was a problem in creating this quiz"
+            );
+        }
     };
 
     const createQuiz = () => {
-        console.log("Selected Category: ", selectedCategory);
         let noProb = true;
         if (quizName == "" || selectedCategory == -1) {
-            console.log("first false");
             noProb = false;
         }
         questions.forEach((question) => {
@@ -226,7 +234,6 @@ export default function Create({ route }) {
                 question.option4 == "" ||
                 question.answer == ""
             ) {
-                console.log("loop false");
                 noProb = false;
             }
         });
@@ -252,17 +259,11 @@ export default function Create({ route }) {
             console.log(json);
             addQuiz(json, createQuizCallback);
         } else {
-            Alert.alert(
+            showGeneralError(
                 "Error!",
-                "One of the questions either has an empty field or the answer has not been selected",
-                [
-                    {
-                        text: "Okay",
-                    },
-                ]
+                "One of the questions either has an empty field or the answer has not been selected"
             );
         }
-        // console.log("noProb: ", noProb);
     };
     return (
         <View style={styles.container}>
@@ -314,7 +315,7 @@ export default function Create({ route }) {
                         zIndex: 10000,
                     }}
                     onChangeItem={(item) =>
-                        SetSelectedCategory(Number(item.value))
+                        setSelectedCategory(Number(item.value))
                     }
                     zIndex={10000}
                 />

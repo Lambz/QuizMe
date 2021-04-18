@@ -1,5 +1,6 @@
 import SetCookieParser from "set-cookie-parser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
 
 export function makeid(length) {
     var result = [];
@@ -61,22 +62,8 @@ export const storeSetCookies = async (headers) => {
 
 export const getCookies = async () => {
     let set_cookies = await AsyncStorage.getItem("cookie");
-    // console.log(
-    //     "set_cookies: ",
-    //     set_cookies,
-    //     Array.isArray(JSON.parse(set_cookies)),
-    //     typeof JSON.parse(set_cookies)
-    // );
     if (set_cookies) {
         set_cookies = JSON.parse(set_cookies);
-        // let cookies_to_send = set_cookies
-        //     .map((cookie) => {
-        //         // console.log("cookie: ", cookie);
-        //         const parsed_cookie = SetCookieParser.parse(cookie);
-        //         console.log("parsed_cookie: ", parsed_cookie);
-        //         return `${parsed_cookie[0].name}=${parsed_cookie[0].value}`;
-        //     })
-        //     .join("; ");
         let parsed_cookie = SetCookieParser.parse(set_cookies[0]);
         let cookies_to_send = `${parsed_cookie[0].name}=${parsed_cookie[0].value}; express:sess.sig=${parsed_cookie[0]["httponly, express:sess.sig"]}`;
         return cookies_to_send;
@@ -101,3 +88,11 @@ export const categories = [
     { label: "Religion", value: 12 },
     { label: "Science & Math", value: 13 },
 ];
+
+export const showGeneralError = (title, message) => {
+    Alert.alert(title, message, [
+        {
+            text: "Okay",
+        },
+    ]);
+};
