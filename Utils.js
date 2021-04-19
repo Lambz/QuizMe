@@ -165,15 +165,24 @@ export const storeSetCookies = async (headers) => {
 };
 
 export const getCookies = async () => {
-    let set_cookies = await AsyncStorage.getItem("cookie");
-    if (set_cookies) {
-        set_cookies = JSON.parse(set_cookies);
-        let parsed_cookie = SetCookieParser.parse(set_cookies[0]);
-        let cookies_to_send = `${parsed_cookie[0].name}=${parsed_cookie[0].value}; express:sess.sig=${parsed_cookie[0]["httponly, express:sess.sig"]}`;
-        return cookies_to_send;
-    } else {
-        null;
+    try {
+        let set_cookies = await AsyncStorage.getItem("cookie");
+        if (set_cookies) {
+            set_cookies = JSON.parse(set_cookies);
+            let parsed_cookie = SetCookieParser.parse(set_cookies[0]);
+            let cookies_to_send = `${parsed_cookie[0].name}=${parsed_cookie[0].value}; express:sess.sig=${parsed_cookie[0]["httponly, express:sess.sig"]}`;
+            return cookies_to_send;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.log("getCookies Error: ", error);
+        return null;
     }
+};
+
+export const clearCookies = async () => {
+    await AsyncStorage.clear();
 };
 
 export const showGeneralError = (title, message) => {

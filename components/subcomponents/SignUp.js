@@ -74,6 +74,7 @@ export default function SignUp({ toggleLogin, signUpUser }) {
                     onChangeText={setEmail}
                     underlineColorAndroid="transparent"
                     value={email}
+                    autoCapitalize="none"
                 />
             </View>
 

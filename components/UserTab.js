@@ -1,5 +1,5 @@
 import { useFocusEffect } from "@react-navigation/core";
-import React from "react";
+import React, { useState } from "react";
 import {
     StyleSheet,
     Text,
@@ -8,8 +8,12 @@ import {
     TextInput,
     TouchableOpacity,
 } from "react-native";
-import { useState } from "react/cjs/react.development";
-import { getCookies } from "../Utils";
+import {
+    logoutUser,
+    loginUserRequest,
+    signUpUserRequest,
+} from "../networking/DatabaseCommunications";
+import { getCookies, showGeneralError } from "../Utils";
 import Login from "./subcomponents/Login";
 import SignUp from "./subcomponents/SignUp";
 export default function UserTab({ route }) {
@@ -37,10 +41,32 @@ export default function UserTab({ route }) {
     };
 
     const loginUser = (email, password) => {
-        console.log("loginUser: ", email, password);
+        // console.log("loginUser: ", email, password);
+        loginUserRequest(email, password, (response) => {
+            if (response) {
+                setLoggedIn(true);
+                return;
+            }
+            showGeneralError("Error!", "There was problem while logging in!");
+        });
     };
 
-    const signUpUser = () => {};
+    const logoutHandler = () => {
+        logoutUser(() => {
+            setLoggedIn(false);
+            setLogin(true);
+        });
+    };
+
+    const signUpUser = (name, email, password) => {
+        signUpUserRequest(name, email, password, (response) => {
+            if (response) {
+                setLoggedIn(true);
+                return;
+            }
+            showGeneralError("Error!", "There was problem while Signing up!");
+        });
+    };
 
     const displayProperInfo = () => {
         if (isLoggedIn) {
@@ -58,6 +84,7 @@ export default function UserTab({ route }) {
                             borderRadius: 10,
                             paddingHorizontal: 50,
                         }}
+                        onPress={logoutHandler}
                     >
                         <Text style={{ textAlign: "center" }}>Logout</Text>
                     </TouchableOpacity>

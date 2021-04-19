@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { Button, StyleSheet, Text, View, NativeModules } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 import { useFocusEffect } from "@react-navigation/core";
 import { FlatList } from "react-native-gesture-handler";
 import { AuthSession, WebBrowser, Linking } from "expo";
 import QuizItem from "./QuizItem";
 import { getCookies, storeSetCookies } from "../Utils";
 import { fetchAllQuizes } from "../networking/DatabaseCommunications";
-const Networking = NativeModules.Networking;
 export default function Home({ route }) {
     const [quizes, setQuizes] = useState([
         {

@@ -46,6 +46,7 @@ export default function Login({ toggleLogin, loginUser }) {
                     onChangeText={setEmail}
                     underlineColorAndroid="transparent"
                     value={email}
+                    autoCapitalize="none"
                 />
             </View>
 
