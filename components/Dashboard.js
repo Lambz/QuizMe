@@ -19,7 +19,7 @@ export default function Dashboard({ navigation }) {
         });
         // navigation.setOptions({ headerShown: false });
     };
-    const moveTo = (name, params) => {
+    const moveTo = (name, params = null) => {
         navigation.navigate(name, params);
     };
     return (

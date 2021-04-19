@@ -288,6 +288,16 @@ export default function Create({ route }) {
                 )}
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={{ padding: 10 }}
+                ListEmptyComponent={() => (
+                    <View
+                        style={{
+                            alignItems: "center",
+                            marginTop: 20,
+                        }}
+                    >
+                        <Text style={{ fontSize: 20 }}>No questions yet</Text>
+                    </View>
+                )}
             />
             <View style={{ padding: 10 }}>
                 <TextInput

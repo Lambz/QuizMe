@@ -68,6 +68,10 @@ export default function UserTab({ route }) {
         });
     };
 
+    const moveToMyQuizes = () => {
+        route.params.moveTo("Quizes");
+    };
+
     const displayProperInfo = () => {
         if (isLoggedIn) {
             return (
@@ -86,7 +90,30 @@ export default function UserTab({ route }) {
                         }}
                         onPress={logoutHandler}
                     >
-                        <Text style={{ textAlign: "center" }}>Logout</Text>
+                        <Text style={{ textAlign: "center", fontSize: 18 }}>
+                            Logout
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{
+                            paddingVertical: 10,
+                            backgroundColor: "#a6efce",
+                            borderRadius: 10,
+                            paddingHorizontal: 50,
+                            marginTop: 20,
+                        }}
+                        onPress={moveToMyQuizes}
+                    >
+                        <Text
+                            style={{
+                                textAlign: "center",
+                                color: "#fff",
+                                fontWeight: "bold",
+                                fontSize: 18,
+                            }}
+                        >
+                            My Quizes
+                        </Text>
                     </TouchableOpacity>
                 </View>
             );

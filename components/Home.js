@@ -97,6 +97,19 @@ export default function Home({ route }) {
                 renderItem={({ item }) => (
                     <QuizItem item={item} quizClicked={quizClicked} />
                 )}
+                keyExtractor={(item) => item._id}
+                ListEmptyComponent={() => (
+                    <View
+                        style={{
+                            alignItems: "center",
+                            marginTop: 20,
+                        }}
+                    >
+                        <Text style={{ fontSize: 20 }}>
+                            No Quizes to display
+                        </Text>
+                    </View>
+                )}
             />
         </View>
     );
