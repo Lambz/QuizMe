@@ -58,7 +58,7 @@ export default function Dashboard({ navigation }) {
                     }}
                 />
 
-                <Tab.Screen
+                {/* <Tab.Screen
                     name="Create"
                     component={Create}
                     initialParams={{ changeHeader: changeHeader }}
@@ -72,7 +72,7 @@ export default function Dashboard({ navigation }) {
                             />
                         ),
                     }}
-                />
+                /> */}
                 <Tab.Screen
                     name="UserTab"
                     component={UserTab}

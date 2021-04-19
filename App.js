@@ -4,6 +4,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import Dashboard from "./components/Dashboard";
 import Quiz from "./components/Quiz";
 import Quizes from "./components/Quizes";
+import Create from "./components/Create";
+import { View, Button } from "react-native";
 const Stack = createStackNavigator();
 export default function App() {
     return (
@@ -24,6 +26,17 @@ export default function App() {
                     component={Quizes}
                     // options={{ headerShown: false }}
                     options={{ title: "My Quizes", headerBackTitle: "Back" }}
+                />
+
+                <Stack.Screen
+                    name="Create"
+                    component={Create}
+                    // options={{ headerShown: false }}
+                    options={{
+                        title: "Create a new Quiz",
+                        headerBackTitle: "Back",
+                        
+                    }}
                 />
             </Stack.Navigator>
         </NavigationContainer>
