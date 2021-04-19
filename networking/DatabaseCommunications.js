@@ -6,6 +6,7 @@ const API_LINK = "http://localhost:3000";
 
 export const addQuiz = async (quiz, callback) => {
     let json = await postRequest(`${API_LINK}/quiz/add`, quiz);
+    console.log("addQuiz json: ", json);
     callback(json);
 };
 
@@ -96,13 +97,13 @@ async function fetchRequest(url = "") {
 
 async function postRequest(url = "", data = {}) {
     console.log("Post Request: ", url, data);
-    // Networking.clearCookies((cleared) => {
-    //         console.debug("cleared hadCookies: " + cleared.toString());
-    //         // ApiUtils.login(your_login_params); // call your login function
-    //     });
-    await Networking.clearCookies();
+    await Networking.clearCookies((cleared) => {
+        console.debug("cleared hadCookies: " + cleared.toString());
+        // ApiUtils.login(your_login_params); // call your login function
+    });
+    // await Networking.clearCookies();
     let cookie = await getCookies();
-    // Default options are marked with *
+    console.log("cookie: ", cookie);
     const response = await fetch(url, {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin

@@ -16,11 +16,13 @@ import { useFocusEffect } from "@react-navigation/core";
 import { TextInput } from "react-native-gesture-handler";
 import DropDownPicker from "react-native-dropdown-picker";
 import { addQuiz } from "../networking/DatabaseCommunications";
+import ToggleSwitch from "rn-toggle-switch";
 export default function Create({ route }) {
     const [questions, setQuestions] = useState([]);
     const [quizName, setQuizName] = useState("");
     const [selectedCategory, setSelectedCategory] = useState(-1);
     const [description, setDescription] = useState("");
+    const [toggleValue, setToggleValue] = useState(false);
 
     const addEmptyQuestion = () => {
         let newQues = {
@@ -220,12 +222,13 @@ export default function Create({ route }) {
     };
 
     const createQuiz = () => {
+        console.log(1);
         let noProb = true;
         if (quizName == "" || selectedCategory == -1) {
             noProb = false;
         }
         questions.forEach((question) => {
-            console.log(question);
+            // console.log(question);
             if (
                 question.ques == "" ||
                 question.option1 == "" ||
@@ -238,6 +241,7 @@ export default function Create({ route }) {
             }
         });
         if (noProb) {
+            console.log(2);
             let json = { name: quizName };
             let ques = [];
             questions.forEach((question) => {
@@ -255,6 +259,7 @@ export default function Create({ route }) {
             json["questions"] = ques;
             json["description"] = description;
             json["typeOfQuiz"] = selectedCategory;
+            json["isPublic"] = toggleValue;
             json = { quiz: json };
             console.log(json);
             addQuiz(json, createQuizCallback);
@@ -298,27 +303,58 @@ export default function Create({ route }) {
                     onChangeText={setDescription}
                     value={description}
                 />
-                <DropDownPicker
-                    items={categories}
-                    containerStyle={{
-                        height: 40,
-                        marginVertical: 5,
-                        zIndex: 10000,
+                <View
+                    style={{
+                        flexDirection: "row",
+                        paddingVertical: 5,
+                        alignItems: "center",
                     }}
-                    style={{ backgroundColor: "#fafafa", zIndex: 10 }}
-                    itemStyle={{
-                        justifyContent: "flex-start",
-                        zIndex: 10000,
-                    }}
-                    dropDownStyle={{
-                        backgroundColor: "#fafafa",
-                        zIndex: 10000,
-                    }}
-                    onChangeItem={(item) =>
-                        setSelectedCategory(Number(item.value))
-                    }
-                    zIndex={10000}
-                />
+                >
+                    <DropDownPicker
+                        items={categories}
+                        containerStyle={{
+                            height: 40,
+                            zIndex: 10000,
+                            width: "65%",
+                        }}
+                        style={{ backgroundColor: "#fafafa", zIndex: 10 }}
+                        itemStyle={{
+                            justifyContent: "flex-start",
+                            zIndex: 10000,
+                        }}
+                        dropDownStyle={{
+                            backgroundColor: "#fafafa",
+                            zIndex: 10000,
+                        }}
+                        onChangeItem={(item) =>
+                            setSelectedCategory(Number(item.value))
+                        }
+                        zIndex={10000}
+                    />
+                    <View style={{ marginLeft: 10 }}>
+                        <ToggleSwitch
+                            text={{
+                                on: "Public",
+                                off: "Private",
+                                activeTextColor: "white",
+                                inactiveTextColor: "#B7B8BA",
+                            }}
+                            textStyle={{ fontWeight: "bold" }}
+                            color={{
+                                indicator: "white",
+                                active: "rgba(32, 193, 173, 1)",
+                                inactive: "rgba( 247, 247, 247, 1)",
+                                activeBorder: "#41B4A4",
+                                inactiveBorder: "#E9E9E9",
+                            }}
+                            active={toggleValue}
+                            disabled={false}
+                            width={60}
+                            radius={25}
+                            onValueChange={setToggleValue}
+                        />
+                    </View>
+                </View>
                 <TouchableOpacity
                     style={{
                         padding: 10,
