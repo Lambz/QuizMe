@@ -7,6 +7,7 @@ import {
     View,
     FlatList,
     TouchableOpacity,
+    SafeAreaView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { detect } from "../networking/Vision";
@@ -17,12 +18,13 @@ import { TextInput } from "react-native-gesture-handler";
 import DropDownPicker from "react-native-dropdown-picker";
 import { addQuiz } from "../networking/DatabaseCommunications";
 import ToggleSwitch from "rn-toggle-switch";
-export default function Create({ route }) {
+export default function Create({ navigation, route }) {
     const [questions, setQuestions] = useState([]);
     const [quizName, setQuizName] = useState("");
     const [selectedCategory, setSelectedCategory] = useState(-1);
     const [description, setDescription] = useState("");
     const [toggleValue, setToggleValue] = useState(false);
+    const [isLoading, setLoading] = useState(true);
 
     const addEmptyQuestion = () => {
         let newQues = {
@@ -36,10 +38,16 @@ export default function Create({ route }) {
         };
         setQuestions((allQuestions) => [...allQuestions, newQues]);
     };
-    useFocusEffect(
-        React.useCallback(() => {
-            const items = (
-                <View style={{ flexDirection: "row", paddingRight: 10 }}>
+
+    if (isLoading) {
+        navigation.setOptions({
+            headerRight: () => (
+                <View
+                    style={{
+                        flexDirection: "row",
+                        paddingRight: 10,
+                    }}
+                >
                     <Button
                         style={{ fontSize: 24 }}
                         title="Scan"
@@ -51,13 +59,10 @@ export default function Create({ route }) {
                         onPress={addEmptyQuestion}
                     />
                 </View>
-            );
-            route.params.changeHeader("Create Quiz", items);
-            return () => {
-                // route.params.deRegisterFocus();
-            };
-        }, [])
-    );
+            ),
+        });
+        setLoading(false);
+    }
 
     useEffect(() => {
         (async () => {
@@ -271,7 +276,7 @@ export default function Create({ route }) {
         }
     };
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <FlatList
                 data={questions}
                 renderItem={({ item }) => (
@@ -384,7 +389,7 @@ export default function Create({ route }) {
                     </Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        </SafeAreaView>
     );
 }
 

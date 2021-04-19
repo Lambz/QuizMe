@@ -1,34 +1,37 @@
 import React, { useState } from "react";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { useFocusEffect } from "@react-navigation/core";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { AuthSession, WebBrowser, Linking } from "expo";
 import QuizItem from "./QuizItem";
 import { getCookies, storeSetCookies } from "../Utils";
 import { fetchAllQuizes } from "../networking/DatabaseCommunications";
 export default function Home({ route }) {
-    const [quizes, setQuizes] = useState([
-        {
-            name: "Simple",
-            questions: [
-                {
-                    answer: "Carrot",
-                    options: ["Cabbage", "Carrot", "Tomato", "Raddish"],
-                    question: "What do you like?",
-                },
-                {
-                    answer: "Yes",
-                    options: ["N/A", "Yes", "No", "Maybe"],
-                    question: "Blackerry you like?",
-                },
-            ],
-            typeOfQuiz: 1,
-        },
-    ]);
+    const [quizes, setQuizes] = useState([]);
+
     const [isLoading, setLoading] = useState(true);
+    const addClicked = () => {
+        route.params.moveTo("Create");
+    };
+    const checkLogin = async () => {
+        const cookie = await getCookies();
+        let items = null;
+        if (cookie) {
+            items = (
+                <TouchableOpacity
+                    style={{ marginRight: 10 }}
+                    onPress={addClicked}
+                >
+                    <Text style={{ fontSize: 32, color: "#007AFF" }}>+</Text>
+                </TouchableOpacity>
+            );
+        }
+        route.params.changeHeader("Home", items);
+    };
     useFocusEffect(
         React.useCallback(() => {
-            route.params.changeHeader("Home", null);
+            checkLogin();
+
             return () => {
                 // route.params.deRegisterFocus();
             };
