@@ -5,6 +5,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Audio } from "expo-av";
 import { shuffle, sounds } from "../Utils";
 import QuizItem from "./QuizItem";
+import { sendResultRequest } from "../networking/DatabaseCommunications";
 export default function Quiz({ navigation, route }) {
     const [isFinished, setFinished] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -57,6 +58,7 @@ export default function Quiz({ navigation, route }) {
     );
 
     const optionSelected = (index) => {
+        let currentScore = score;
         if (
             route.params.quiz.questions[currentIndex].answer == options[index]
         ) {
@@ -76,6 +78,7 @@ export default function Quiz({ navigation, route }) {
                     setBgOption4Color("#4cd964");
                     break;
             }
+            currentScore += 1;
             setScore(score + 1);
         } else {
             playSound(sounds.wrongAnswer);
@@ -137,6 +140,10 @@ export default function Quiz({ navigation, route }) {
                 setCurrentIndex(currentIndex + 1);
             } else {
                 setFinished(true);
+                sendResultRequest({
+                    quiz: route.params.quiz,
+                    score: currentScore,
+                });
             }
         }, 1000);
     };
