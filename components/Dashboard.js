@@ -46,6 +46,10 @@ export default function Dashboard({ navigation }) {
                 <Tab.Screen
                     name="Browse"
                     component={Browse}
+                    initialParams={{
+                        changeHeader: changeHeader,
+                        moveTo: moveTo,
+                    }}
                     options={{
                         tabBarLabel: "Browse",
                         tabBarIcon: ({ color, size }) => (
