@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
+import { getQuizesByUser } from "../networking/DatabaseCommunications";
+import QuizItem from "./QuizItem";
 export default function Quizes({ navigation, route }) {
     const [quizes, setQuizes] = useState([]);
     const [isLoading, setLoading] = useState(true);
     if (isLoading) {
-        //TODO: Fetch Quizes
+        getQuizesByUser((json) => {
+            setQuizes(json);
+        });
         setLoading(false);
     }
 
@@ -20,11 +24,14 @@ export default function Quizes({ navigation, route }) {
             </View>
         );
     };
+    const quizClicked = (quiz) => {
+        
+    };
     return (
         <View style={styles.container}>
             <FlatList
                 data={quizes}
-                renderItem={({ item }) => console.log(item)}
+                renderItem={({ item }) => <QuizItem item={item} quizClicked={quizClicked}/>}
                 keyExtractor={(item) => item._id}
                 ListEmptyComponent={showEmptyComponent}
             />

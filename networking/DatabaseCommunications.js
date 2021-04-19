@@ -26,6 +26,11 @@ export const sendResultRequest = async (data) => {
     console.log("sendResultRequest: ", json);
 };
 
+export const getQuizesByUser = async (callback) => {
+    let json = await fetchRequest(`${API_LINK}/quiz/get`);
+    callback(json);
+};
+
 export const loginUserRequest = async (email, password, callback) => {
     let data = { email: email, password: password };
     const response = await fetch(`${API_LINK}/auth/login`, {
