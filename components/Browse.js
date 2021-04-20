@@ -8,98 +8,95 @@ import {
     TouchableOpacity,
     Platform,
     FlatList,
-    ScrollView
+    ScrollView,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/core";
-import { fetchQuizForMetrics, fetchQuizForCategory } from "../networking/DatabaseCommunications";
-import { getRandomImage, categories, imageArray } from "../Utils";
+import {
+    fetchQuizForMetrics,
+    fetchQuizForCategory,
+} from "../networking/DatabaseCommunications";
+import { getRandomImage, categories } from "../Utils";
 
-const {width: screenWidth} = Dimensions.get("window");
-let carouselArray = [];
+const { width: screenWidth } = Dimensions.get("window");
 
-export default function Browse({route}) {
+export default function Browse({ route }) {
     useFocusEffect(
-            React.useCallback(() => {
-                route.params.changeHeader("Browse", null);
-                return () => {
-                    // route.params.deRegisterFocus();
-                };
-            }, [])
+        React.useCallback(() => {
+            route.params.changeHeader("Browse", null);
+            return () => {
+                // route.params.deRegisterFocus();
+            };
+        }, [])
     );
 
-    const [categoryArray, setCategories] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
     const carouselRef = useRef(null);
     const goForward = () => {
         carouselRef.current.snapToNext();
     };
-    if(isLoading) {
-        console.log(categories);
-        categories.forEach((val, index) => {
-            carouselArray.push({
-                illustration: imageArray[index],
-                title: val.label,
-            });
-        })
-        setIsLoading(false);
-    }
 
     const imageClicked = (subcategoryIndex) => {
         fetchQuizForCategory(subcategoryIndex.index, (data) => {
-            route.params.moveTo('BrowseItem', {items: data});
-        })
+            route.params.moveTo("BrowseItem", { items: data });
+        });
     };
 
-    const metricsClicked = function(id) {
+    const metricsClicked = function (id) {
         fetchQuizForMetrics(id, (data) => {
-            route.params.moveTo('BrowseItem', {items: data});
-        }); 
-    }
+            route.params.moveTo("BrowseItem", { items: data });
+        });
+    };
 
     const renderItem = ({ item, index }, parallaxProps) => {
+        console.log("renderItem: ", item);
         return (
             <TouchableOpacity
                 style={styles.item}
                 onPress={() => imageClicked({ index })}
             >
                 <ParallaxImage
-                    source={{ uri: item.illustration }}
+                    source={getRandomImage(item.value)}
                     containerStyle={styles.imageContainer}
                     style={styles.image}
                     parallaxFactor={0.4}
                     {...parallaxProps}
                 />
                 <Text style={styles.title} numberOfLines={2}>
-                    {item.title}
+                    {item.label}
                 </Text>
             </TouchableOpacity>
         );
     };
 
-
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.headerText}>
-                Discover your next
-            </Text>
+            <Text style={styles.headerText}>Discover your next</Text>
             <View style={styles.metrics}>
-                <TouchableOpacity style={[styles.colorOne, styles.metricsView]} onPress={() => metricsClicked(0)}>
-                        <View>
-                            <Text style={styles.metricsText}>Trending</Text>
-                        </View>
-                    </TouchableOpacity>
-                <TouchableOpacity style={[styles.metricsView, styles.colorTwo]} onPress={() => metricsClicked(1)}>
+                <TouchableOpacity
+                    style={[styles.colorOne, styles.metricsView]}
+                    onPress={() => metricsClicked(0)}
+                >
+                    <View>
+                        <Text style={styles.metricsText}>Trending</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[styles.metricsView, styles.colorTwo]}
+                    onPress={() => metricsClicked(1)}
+                >
                     <View>
                         <Text style={styles.metricsText}>Popular</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.metricsView, styles.colorThree]} onPress={() => metricsClicked(2)}>
+                <TouchableOpacity
+                    style={[styles.metricsView, styles.colorThree]}
+                    onPress={() => metricsClicked(2)}
+                >
                     <View>
                         <Text style={styles.metricsText}>Recently Added</Text>
                     </View>
                 </TouchableOpacity>
             </View>
-            
+
             <Text style={styles.category} onPress={goForward}>
                 Browse by Category
             </Text>
@@ -108,7 +105,7 @@ export default function Browse({route}) {
                 sliderWidth={screenWidth}
                 sliderHeight={screenWidth}
                 itemWidth={screenWidth - 60}
-                data={carouselArray}
+                data={categories}
                 renderItem={renderItem}
                 hasParallaxImages={true}
             />
@@ -120,23 +117,23 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#fff",
-        marginBottom: 10
+        marginBottom: 10,
     },
     headerText: {
         fontSize: 34,
         fontWeight: "bold",
         marginBottom: 20,
-        padding: 5
+        padding: 5,
     },
     metrics: {
         alignItems: "flex-start",
         flexDirection: "row",
         justifyContent: "flex-start",
         flexWrap: "wrap",
-        marginBottom: 20
+        marginBottom: 20,
     },
     metricsView: {
-        shadowColor: 'black',
+        shadowColor: "black",
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 6,
         shadowOpacity: 0.26,
@@ -144,26 +141,26 @@ const styles = StyleSheet.create({
         padding: 20,
         borderRadius: 10,
         margin: 5,
-        minWidth: 160
+        minWidth: 160,
     },
     metricsText: {
         marginHorizontal: 30,
-        fontWeight: "bold"
+        fontWeight: "bold",
     },
     colorOne: {
-        backgroundColor: "#ff6f52"
+        backgroundColor: "#ff6f52",
     },
     colorTwo: {
-        backgroundColor: "#fff700"
+        backgroundColor: "#fff700",
     },
     colorThree: {
-        backgroundColor: "#15f2fd"
+        backgroundColor: "#15f2fd",
     },
     category: {
         fontSize: 24,
         fontWeight: "bold",
         marginBottom: 20,
-        padding: 5
+        padding: 5,
     },
     item: {
         width: screenWidth - 100,
@@ -179,10 +176,10 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFillObject,
         resizeMode: "contain",
     },
-    
+
     title: {
         fontSize: 18,
         fontWeight: "bold",
-        color: 'darkslategray'
+        color: "darkslategray",
     },
 });
