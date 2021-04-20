@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import { getQuizesByUser } from "../networking/DatabaseCommunications";
+import { useFocusEffect } from "@react-navigation/core";
 import QuizItem from "./QuizItem";
 export default function Quizes({ navigation, route }) {
     const [quizes, setQuizes] = useState([]);
-    const [isLoading, setLoading] = useState(true);
-    if (isLoading) {
-        getQuizesByUser((json) => {
-            setQuizes(json);
-        });
-        setLoading(false);
-    }
+    useFocusEffect(
+        React.useCallback(() => {
+            getQuizesByUser((json) => {
+                setQuizes(json);
+            });
+
+            return () => {
+                // route.params.deRegisterFocus();
+            };
+        }, [])
+    );
 
     const showEmptyComponent = () => {
         return (
@@ -25,13 +30,15 @@ export default function Quizes({ navigation, route }) {
         );
     };
     const quizClicked = (quiz) => {
-        
+        navigation.navigate("Create", { quiz: quiz });
     };
     return (
         <View style={styles.container}>
             <FlatList
                 data={quizes}
-                renderItem={({ item }) => <QuizItem item={item} quizClicked={quizClicked}/>}
+                renderItem={({ item }) => (
+                    <QuizItem item={item} quizClicked={quizClicked} />
+                )}
                 keyExtractor={(item) => item._id}
                 ListEmptyComponent={showEmptyComponent}
             />
