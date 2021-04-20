@@ -68,7 +68,7 @@ export default function SendChallenge({ navigation, route }) {
         );
     };
     return (
-        <View>
+        <View style={styles.container}>
             <SearchBar
                 placeholder="Search User"
                 onChangeText={updateSeachText}
