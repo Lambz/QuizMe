@@ -1,32 +1,82 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
+import React, { useRef, useState } from "react";
+import Carousel, { ParallaxImage } from "react-native-snap-carousel";
+import {
+    View,
+    Text,
+    Dimensions,
+    StyleSheet,
+    TouchableOpacity,
+    Platform,
+    FlatList,
+    ScrollView
+} from "react-native";
 import { useFocusEffect } from "@react-navigation/core";
+import { fetchQuizForMetrics } from "../networking/DatabaseCommunications";
+import { getRandomImage, categories } from "../Utils";
 
-const metricsClicked = function(id) {
-    console.log(id);
-    switch(id) {
-        case 0: break;
-        case 1: break;
-        case 2: break; 
-    }
-}
-
-const generateRandomColor = () => {
-    return Math.floor(Math.random()*16777215).toString(16);
-}
+const {width: screenWidth} = Dimensions.get("window");
+let carouselArray = [];
 
 export default function Browse({route}) {
     useFocusEffect(
-        React.useCallback(() => {
-            route.params.changeHeader("Browse", null);
-            return () => {
-                // route.params.deRegisterFocus();
-            };
-        }, [])
+            React.useCallback(() => {
+                route.params.changeHeader("Browse", null);
+                return () => {
+                    // route.params.deRegisterFocus();
+                };
+            }, [])
     );
+
+    const [categoryArray, setCategories] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const carouselRef = useRef(null);
+    const goForward = () => {
+        carouselRef.current.snapToNext();
+    };
+    if(isLoading) {
+        console.log(categories);
+        categories.forEach(val => {
+            carouselArray.push({
+                illustration: getRandomImage(val.value),
+                title: val.label,
+            });
+        })
+        setIsLoading(false);
+    }
+
+    const imageClicked = (subcategoryIndex) => {
+        console.log("Click", subcategoryIndex);
+    };
+
+    const metricsClicked = function(id) {
+        const data = fetchQuizForMetrics(id);
+        console.log(data);
+        route.params.moveTo('BrowseItem', data);
+    }
+
+    const renderItem = ({ item, index }, parallaxProps) => {
+        return (
+            <TouchableOpacity
+                style={styles.item}
+                onPress={() => imageClicked({ index })}
+            >
+                <ParallaxImage
+                    source={{ uri: "https://static.thenounproject.com/png/2426188-200.png" }}
+                    containerStyle={styles.imageContainer}
+                    style={styles.image}
+                    parallaxFactor={0.4}
+                    {...parallaxProps}
+                />
+                <Text style={styles.title} numberOfLines={2}>
+                    {item.title}
+                </Text>
+            </TouchableOpacity>
+        );
+    };
+
+
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text style={styles.headerText}>
                 Discover your next Quiz
             </Text>
@@ -48,11 +98,19 @@ export default function Browse({route}) {
                 </TouchableOpacity>
             </View>
             
-            <Text style={styles.category}>
+            <Text style={styles.category} onPress={goForward}>
                 Browse by Category
             </Text>
-            <FlatList></FlatList>
-        </View>
+            <Carousel
+                ref={carouselRef}
+                sliderWidth={screenWidth}
+                sliderHeight={screenWidth}
+                itemWidth={screenWidth - 60}
+                data={carouselArray}
+                renderItem={renderItem}
+                hasParallaxImages={true}
+            />
+        </ScrollView>
     );
 }
 
@@ -60,6 +118,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#fff",
+        marginBottom: 10
     },
     headerText: {
         fontSize: 34,
@@ -103,5 +162,25 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         marginBottom: 20,
         padding: 5
-    }
+    },
+    item: {
+        width: screenWidth - 100,
+        height: screenWidth - 150,
+    },
+    imageContainer: {
+        flex: 1,
+        marginBottom: Platform.select({ ios: 0, android: 1 }), // Prevent a random Android rendering issue
+        backgroundColor: "white",
+        borderRadius: 8,
+    },
+    image: {
+        ...StyleSheet.absoluteFillObject,
+        resizeMode: "contain",
+    },
+    
+    title: {
+        fontSize: 18,
+        fontWeight: "bold",
+        color: 'darkslategray'
+    },
 });

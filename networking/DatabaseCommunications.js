@@ -1,5 +1,5 @@
 import { NativeModules } from "react-native";
-import { clearCookies, getCookies, storeSetCookies } from "../Utils";
+import { clearCookies, getCookies, storeSetCookies, categories } from "../Utils";
 const Networking = NativeModules.Networking;
 
 const API_LINK = "http://localhost:3000";
@@ -14,6 +14,26 @@ export const fetchAllQuizes = async (callback) => {
     let json = await fetchRequest(`${API_LINK}/quiz`);
     callback(json);
 };
+
+export const fetchCategoriesWithQuiz = async (callback) => {
+    // const data = await fetchRequest(`${API_LINK}/quiz/categories`);
+    // const categoryData = data.Categories;
+    // let categoryArray = [];
+    // categoryData.forEach(category => {
+    //     categoryArray.push(categories[category]);
+    // })
+    callback(categories);
+}
+
+export const fetchQuizForMetrics = async (index) => {
+    let data = [];
+    switch(index) {
+        case 0: data = await fetchRequest(`${API_LINK}/quiz/trending`);
+        case 1: data = await fetchRequest(`${API_LINK}/quiz/trending`);
+        case 2: data = await fetchRequest(`${API_LINK}/quiz/trending`);
+    }
+    return data;
+}
 
 export const logoutUser = async (callback) => {
     await fetchRequest(`${API_LINK}/auth/logout`);
