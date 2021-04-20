@@ -147,6 +147,12 @@ export default function Quiz({ navigation, route }) {
         }, 1000);
     };
     const displayWinner = () => {
+        console.log(
+            "displayWinner: ",
+            isFinished,
+            score,
+            route.params.quiz.questions.length
+        );
         if (isFinished && score / route.params.quiz.questions.length > 0.5) {
             playSound(sounds.winner);
             return (

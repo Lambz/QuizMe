@@ -165,6 +165,28 @@ export const sendChallengeRequest = async (data, callback) => {
     callback(false);
 };
 
+export const getCurrentUserRequest = async (callback) => {
+    let json = await fetchRequest(`${API_LINK}/user/`);
+    if (json["Message"] == undefined) {
+        callback(json);
+        return;
+    }
+    callback(null);
+};
+
+export const getInvitesRequest = async (callback) => {
+    let json = await fetchRequest(`${API_LINK}/user/inviteReceived`);
+    if (json["Message"] == undefined) {
+        callback(json);
+        return;
+    }
+    callback(null);
+};
+
+export const acceptInviteRequest = async (id) => {
+    fetchRequest(`${API_LINK}/user/acceptInvite/${id}`);
+};
+
 async function fetchRequest(url = "") {
     console.log("Fetch Request: ", url);
     let cookie = await getCookies();

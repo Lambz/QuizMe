@@ -6,6 +6,7 @@ import { AuthSession, WebBrowser, Linking } from "expo";
 import QuizItem from "./subcomponents/QuizItem";
 import { getCookies, storeSetCookies } from "../Utils";
 import { fetchAllQuizes } from "../networking/DatabaseCommunications";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 export default function Home({ route }) {
     const [quizes, setQuizes] = useState([]);
     const [isLoggedIn, setLoggedIn] = useState(false);
@@ -13,18 +14,32 @@ export default function Home({ route }) {
     const addClicked = () => {
         route.params.moveTo("Create");
     };
+    const challengesClicked = () => {
+        route.params.moveTo("Challenges");
+    };
     const checkLogin = async () => {
         const cookie = await getCookies();
         let items = null;
         if (cookie) {
             setLoggedIn(true);
             items = (
-                <TouchableOpacity
-                    style={{ marginRight: 10 }}
-                    onPress={addClicked}
-                >
-                    <Text style={{ fontSize: 32, color: "#007AFF" }}>+</Text>
-                </TouchableOpacity>
+                <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+                    <TouchableOpacity onPress={challengesClicked}>
+                        <MaterialCommunityIcons
+                            name="sword-cross"
+                            size={20}
+                            color="#007AFF"
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{ marginHorizontal: 10, alignItems: "center" }}
+                        onPress={addClicked}
+                    >
+                        <Text style={{ fontSize: 32, color: "#007AFF" }}>
+                            +
+                        </Text>
+                    </TouchableOpacity>
+                </View>
             );
         }
         route.params.changeHeader("Home", items);
