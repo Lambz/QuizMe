@@ -4,7 +4,6 @@ import { Alert, StyleSheet, Text, View, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Audio } from "expo-av";
 import { shuffle, sounds } from "../Utils";
-import QuizItem from "./QuizItem";
 import { sendResultRequest } from "../networking/DatabaseCommunications";
 export default function Quiz({ navigation, route }) {
     const [isFinished, setFinished] = useState(false);

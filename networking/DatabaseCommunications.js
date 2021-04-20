@@ -147,6 +147,24 @@ export const fetchAllQuestionsRequest = async (callback) => {
     callback(json);
 };
 
+export const searchUserRequest = async (data, callback) => {
+    let json = await postRequest(`${API_LINK}/user/search`, data);
+    if (json["Message"] == undefined) {
+        callback(json);
+        return;
+    }
+    callback([]);
+};
+
+export const sendChallengeRequest = async (data, callback) => {
+    let json = await postRequest(`${API_LINK}/user/challenge`, data);
+    if (json["Message"] == undefined) {
+        callback(true);
+        return;
+    }
+    callback(false);
+};
+
 async function fetchRequest(url = "") {
     console.log("Fetch Request: ", url);
     let cookie = await getCookies();
