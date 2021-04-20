@@ -6,6 +6,7 @@ import Quiz from "./components/Quiz";
 import Quizes from "./components/Quizes";
 import Create from "./components/Create";
 import { View, Button } from "react-native";
+import BrowseItem from "./components/BrowseItem";
 const Stack = createStackNavigator();
 export default function App() {
     return (
@@ -38,6 +39,18 @@ export default function App() {
                         
                     }}
                 />
+
+                <Stack.Screen
+                    name="BrowseItem"
+                    component={BrowseItem}
+                    // options={{ headerShown: false }}
+                    options={{
+                        title: "Explore",
+                        headerBackTitle: "Back",
+                        
+                    }}
+                />
+
             </Stack.Navigator>
         </NavigationContainer>
     );

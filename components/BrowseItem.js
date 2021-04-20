@@ -8,8 +8,7 @@ const itemClicked = (item) => {
 }
 
 export default function BrowseItem({route, data}) {
-    const [quizList, setQuizList] = useState(data);
-
+    const [quizList, setQuizList] = useState(route.params.items);
     return(
         <ScrollView>
             <FlatList data={quizList} renderItem={({item}) => <QuizItem item={item} quizClicked={itemClicked}></QuizItem>}></FlatList>

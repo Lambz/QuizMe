@@ -1,6 +1,38 @@
 import SetCookieParser from "set-cookie-parser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Alert } from "react-native";
+import { Alert, Image } from "react-native";
+
+let imageUriArray = [];
+import genericImage from "./assets/generic/1.jpg";
+imageUriArray.push(Image.resolveAssetSource(genericImage).uri);
+import movieImage from "./assets/movies/4.jpg";
+imageUriArray.push(Image.resolveAssetSource(movieImage).uri);
+import musicImage from "./assets/music/3.jpg";
+imageUriArray.push(Image.resolveAssetSource(musicImage).uri);
+import tvImage from "./assets/TV/3.webp";
+imageUriArray.push(Image.resolveAssetSource(tvImage).uri);
+import newsImage from "./assets/news/5.jpg";
+imageUriArray.push(Image.resolveAssetSource(newsImage).uri);
+import gamesImage from "./assets/games/1.jpg";
+imageUriArray.push(Image.resolveAssetSource(gamesImage).uri);
+import gkImage from "./assets/gk/2.jpg";
+imageUriArray.push(Image.resolveAssetSource(gkImage).uri);
+import businessImage from "./assets/business/3.png";
+imageUriArray.push(Image.resolveAssetSource(businessImage).uri);
+import sportsImage from "./assets/sports/4.jpg";
+imageUriArray.push(Image.resolveAssetSource(sportsImage).uri);
+import geographyImage from "./assets/geography/1.jpg";
+imageUriArray.push(Image.resolveAssetSource(geographyImage).uri);
+import historyImage from "./assets/history/4.jpg";
+imageUriArray.push(Image.resolveAssetSource(historyImage).uri);
+import literatureImage from "./assets/literature/4.webp";
+imageUriArray.push(Image.resolveAssetSource(literatureImage).uri);
+import religionImage from "./assets/religion/4.jpg";
+imageUriArray.push(Image.resolveAssetSource(religionImage).uri);
+import scienceImage from "./assets/science/4.jpg";
+imageUriArray.push(Image.resolveAssetSource(scienceImage).uri);     
+
+export const imageArray = imageUriArray;
 
 export function makeid(length) {
     var result = [];

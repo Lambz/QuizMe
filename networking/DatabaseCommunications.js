@@ -25,14 +25,28 @@ export const fetchCategoriesWithQuiz = async (callback) => {
     callback(categories);
 }
 
-export const fetchQuizForMetrics = async (index) => {
+export const fetchQuizForMetrics = (index, callback) => {
     let data = [];
     switch(index) {
-        case 0: data = await fetchRequest(`${API_LINK}/quiz/trending`);
-        case 1: data = await fetchRequest(`${API_LINK}/quiz/trending`);
-        case 2: data = await fetchRequest(`${API_LINK}/quiz/trending`);
+        case 0: data = fetchRequest(`${API_LINK}/quiz/trending`);
+                break;
+        case 1: data = fetchRequest(`${API_LINK}/quiz/trending`);
+                break;
+        case 2: data = fetchRequest(`${API_LINK}/quiz/trending`);
+                break;
     }
-    return data;
+    data.then(val => {
+        callback(val);
+    });
+    
+}
+
+export const fetchQuizForCategory = (index, callback) => {
+    const category = categories[index].label;
+    const data = fetchRequest(`${API_LINK}/quiz/category/${index}`);
+    data.then(val => {
+        callback(val);
+    })
 }
 
 export const logoutUser = async (callback) => {

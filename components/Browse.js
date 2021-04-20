@@ -11,8 +11,8 @@ import {
     ScrollView
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/core";
-import { fetchQuizForMetrics } from "../networking/DatabaseCommunications";
-import { getRandomImage, categories } from "../Utils";
+import { fetchQuizForMetrics, fetchQuizForCategory } from "../networking/DatabaseCommunications";
+import { getRandomImage, categories, imageArray } from "../Utils";
 
 const {width: screenWidth} = Dimensions.get("window");
 let carouselArray = [];
@@ -35,9 +35,9 @@ export default function Browse({route}) {
     };
     if(isLoading) {
         console.log(categories);
-        categories.forEach(val => {
+        categories.forEach((val, index) => {
             carouselArray.push({
-                illustration: getRandomImage(val.value),
+                illustration: imageArray[index],
                 title: val.label,
             });
         })
@@ -45,13 +45,15 @@ export default function Browse({route}) {
     }
 
     const imageClicked = (subcategoryIndex) => {
-        console.log("Click", subcategoryIndex);
+        fetchQuizForCategory(subcategoryIndex.index, (data) => {
+            route.params.moveTo('BrowseItem', {items: data});
+        })
     };
 
     const metricsClicked = function(id) {
-        const data = fetchQuizForMetrics(id);
-        console.log(data);
-        route.params.moveTo('BrowseItem', data);
+        fetchQuizForMetrics(id, (data) => {
+            route.params.moveTo('BrowseItem', {items: data});
+        }); 
     }
 
     const renderItem = ({ item, index }, parallaxProps) => {
@@ -61,7 +63,7 @@ export default function Browse({route}) {
                 onPress={() => imageClicked({ index })}
             >
                 <ParallaxImage
-                    source={{ uri: "https://static.thenounproject.com/png/2426188-200.png" }}
+                    source={{ uri: item.illustration }}
                     containerStyle={styles.imageContainer}
                     style={styles.image}
                     parallaxFactor={0.4}
@@ -78,7 +80,7 @@ export default function Browse({route}) {
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.headerText}>
-                Discover your next Quiz
+                Discover your next
             </Text>
             <View style={styles.metrics}>
                 <TouchableOpacity style={[styles.colorOne, styles.metricsView]} onPress={() => metricsClicked(0)}>
