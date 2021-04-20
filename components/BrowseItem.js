@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import QuizItem from './QuizItem';
+import QuizItem from './subcomponents/QuizItem';
 
 const itemClicked = (item) => {
     console.log(item);
