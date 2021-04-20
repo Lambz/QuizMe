@@ -6,6 +6,7 @@ import Quiz from "./components/Quiz";
 import Quizes from "./components/Quizes";
 import Create from "./components/Create";
 import { View, Button } from "react-native";
+import ImportQuestions from "./components/ImportQuestions";
 const Stack = createStackNavigator();
 export default function App() {
     return (
@@ -35,7 +36,15 @@ export default function App() {
                     options={{
                         title: "Create a new Quiz",
                         headerBackTitle: "Back",
-                        
+                    }}
+                />
+                <Stack.Screen
+                    name="ImportQuestions"
+                    component={ImportQuestions}
+                    // options={{ headerShown: false }}
+                    options={{
+                        title: "Import Questions",
+                        // headerBackTitle: "Back",
                     }}
                 />
             </Stack.Navigator>
