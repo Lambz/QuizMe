@@ -1,5 +1,10 @@
 import { NativeModules } from "react-native";
-import { clearCookies, getCookies, storeSetCookies, categories } from "../Utils";
+import {
+    clearCookies,
+    getCookies,
+    storeSetCookies,
+    categories,
+} from "../Utils";
 const Networking = NativeModules.Networking;
 
 const API_LINK = "http://localhost:3000";
@@ -23,7 +28,7 @@ export const fetchCategoriesWithQuiz = async (callback) => {
     //     categoryArray.push(categories[category]);
     // })
     callback(categories);
-}
+};
 
 export const fetchQuizForMetrics = (index, callback) => {
     let data = [];
@@ -146,6 +151,51 @@ export const signUpUserRequest = async (name, email, password, callback) => {
         return;
     }
     callback(false);
+};
+
+export const fetchAllQuestionsRequest = async (callback) => {
+    let json = await fetchRequest(`${API_LINK}/question`);
+    callback(json);
+};
+
+export const searchUserRequest = async (data, callback) => {
+    let json = await postRequest(`${API_LINK}/user/search`, data);
+    if (json["Message"] == undefined) {
+        callback(json);
+        return;
+    }
+    callback([]);
+};
+
+export const sendChallengeRequest = async (data, callback) => {
+    let json = await postRequest(`${API_LINK}/user/challenge`, data);
+    if (json["Message"] == undefined) {
+        callback(true);
+        return;
+    }
+    callback(false);
+};
+
+export const getCurrentUserRequest = async (callback) => {
+    let json = await fetchRequest(`${API_LINK}/user/`);
+    if (json["Message"] == undefined) {
+        callback(json);
+        return;
+    }
+    callback(null);
+};
+
+export const getInvitesRequest = async (callback) => {
+    let json = await fetchRequest(`${API_LINK}/user/inviteReceived`);
+    if (json["Message"] == undefined) {
+        callback(json);
+        return;
+    }
+    callback(null);
+};
+
+export const acceptInviteRequest = async (id) => {
+    fetchRequest(`${API_LINK}/user/acceptInvite/${id}`);
 };
 
 async function fetchRequest(url = "") {

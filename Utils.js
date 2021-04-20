@@ -158,7 +158,7 @@ export const categories = [
 ];
 
 export const getRandomImage = (index) => {
-    console.log(index);
+    // console.log(index);
     if (index > images.length) {
         index = getRandomInt(0, images.length - 1);
     }

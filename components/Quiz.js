@@ -4,7 +4,6 @@ import { Alert, StyleSheet, Text, View, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Audio } from "expo-av";
 import { shuffle, sounds } from "../Utils";
-import QuizItem from "./QuizItem";
 import { sendResultRequest } from "../networking/DatabaseCommunications";
 export default function Quiz({ navigation, route }) {
     const [isFinished, setFinished] = useState(false);
@@ -148,6 +147,12 @@ export default function Quiz({ navigation, route }) {
         }, 1000);
     };
     const displayWinner = () => {
+        console.log(
+            "displayWinner: ",
+            isFinished,
+            score,
+            route.params.quiz.questions.length
+        );
         if (isFinished && score / route.params.quiz.questions.length > 0.5) {
             playSound(sounds.winner);
             return (

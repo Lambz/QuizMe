@@ -21,6 +21,7 @@ import {
     addQuestionsRequest,
 } from "../networking/DatabaseCommunications";
 import ToggleSwitch from "rn-toggle-switch";
+import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 export default function Create({ navigation, route }) {
     const [questions, setQuestions] = useState([]);
     const [quizName, setQuizName] = useState("");
@@ -39,6 +40,15 @@ export default function Create({ navigation, route }) {
             isEditing: false,
         };
         setQuestions((allQuestions) => [...allQuestions, newQues]);
+    };
+
+    const importQuestionsCallback = (array) => {
+        setQuestions([...questions, ...array]);
+    };
+    const importQuestions = () => {
+        navigation.navigate("ImportQuestions", {
+            importQuestionsCallback: importQuestionsCallback,
+        });
     };
 
     if (isLoading) {
@@ -66,18 +76,25 @@ export default function Create({ navigation, route }) {
                     style={{
                         flexDirection: "row",
                         paddingRight: 10,
+                        alignItems: "center",
                     }}
                 >
-                    <Button
-                        style={{ fontSize: 24 }}
-                        title="Scan"
+                    <TouchableOpacity
+                        style={{ marginRight: 10 }}
                         onPress={showOptionsAlert}
-                    />
-                    <Button
-                        style={{ fontSize: 32 }}
-                        title="+"
-                        onPress={addEmptyQuestion}
-                    />
+                    >
+                        <AntDesign name="scan1" size={20} color="#007AFF" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={importQuestions}>
+                        <MaterialCommunityIcons
+                            name="database-import"
+                            size={20}
+                            color="#007AFF"
+                        />
+                    </TouchableOpacity>
+                    {/* <Button title="Scan" onPress={showOptionsAlert} />
+                    <Button title="Import" onPress={showOptionsAlert} /> */}
+                    <Button title="+" onPress={addEmptyQuestion} />
                 </View>
             ),
         });
@@ -288,7 +305,6 @@ export default function Create({ navigation, route }) {
 
     const addQuestionsAndUpdateQuiz = async () => {
         let newQuestions = questions.filter((ques) => !ques.isEditing);
-
         addQuestionsRequest(newQuestions, (array) => {
             let quiz = route.params.quiz;
             quiz.name = quizName;
