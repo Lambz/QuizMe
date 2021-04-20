@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, RefreshControl, StyleSheet, Text, View } from "react-native";
 import { useFocusEffect } from "@react-navigation/core";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { AuthSession, WebBrowser, Linking } from "expo";
@@ -113,6 +113,9 @@ export default function Home({ route }) {
                         </Text>
                     </View>
                 )}
+                refreshControl={
+                    <RefreshControl onRefresh={() => setLoading(true)} />
+                }
             />
         </View>
     );

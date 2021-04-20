@@ -31,6 +31,22 @@ export const getQuizesByUser = async (callback) => {
     callback(json);
 };
 
+export const updateQuestionRequest = async (data, callback) => {
+    let json = await postRequest(
+        `${API_LINK}/question/update/${data._id}`,
+        data
+    );
+    callback(json);
+};
+
+export const updateQuizRequest = async (data, callback) => {
+    let json = await postRequest(
+        `${API_LINK}/quiz/update/${data.quiz._id}`,
+        data
+    );
+    callback(json);
+};
+
 export const loginUserRequest = async (email, password, callback) => {
     let data = { email: email, password: password };
     const response = await fetch(`${API_LINK}/auth/login`, {
@@ -53,6 +69,19 @@ export const loginUserRequest = async (email, password, callback) => {
         return;
     }
     callback(false);
+};
+
+export const addQuestionsRequest = async (data, callback) => {
+    let questionRequests = [];
+    data.forEach((question) => {
+        question["isPublic"] = true;
+        questionRequests.push(
+            postRequest(`${API_LINK}/question/add`, { question: question })
+        );
+    });
+    let response = await Promise.all(questionRequests);
+    response = response.map((res) => res._id);
+    callback(response);
 };
 
 export const signUpUserRequest = async (name, email, password, callback) => {

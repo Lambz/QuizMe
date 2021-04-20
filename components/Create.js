@@ -13,10 +13,13 @@ import * as ImagePicker from "expo-image-picker";
 import { detect } from "../networking/Vision";
 import EditableQuestion from "./EditableQuestion";
 import { categories, makeid, showGeneralError } from "../Utils";
-import { useFocusEffect } from "@react-navigation/core";
 import { TextInput } from "react-native-gesture-handler";
 import DropDownPicker from "react-native-dropdown-picker";
-import { addQuiz } from "../networking/DatabaseCommunications";
+import {
+    addQuiz,
+    updateQuizRequest,
+    addQuestionsRequest,
+} from "../networking/DatabaseCommunications";
 import ToggleSwitch from "rn-toggle-switch";
 export default function Create({ navigation, route }) {
     const [questions, setQuestions] = useState([]);
@@ -25,22 +28,39 @@ export default function Create({ navigation, route }) {
     const [description, setDescription] = useState("");
     const [toggleValue, setToggleValue] = useState(false);
     const [isLoading, setLoading] = useState(true);
+    const [buttonText, setButtonText] = useState("Create");
 
     const addEmptyQuestion = () => {
         let newQues = {
-            ques: "",
-            option1: "",
-            option2: "",
-            option3: "",
-            option4: "",
+            question: "",
+            options: [],
             answer: "",
-            id: makeid(10),
+            _id: makeid(10),
+            isEditing: false,
         };
         setQuestions((allQuestions) => [...allQuestions, newQues]);
     };
 
     if (isLoading) {
+        // console.log("quiz: ", route.params.quiz);
+        let title = "Create a new Quiz";
+        if (route.params != null && route.params.quiz != undefined) {
+            title = "Edit quiz";
+            setQuizName(route.params.quiz.name);
+            let questions = route.params.quiz.questions;
+            questions.forEach((question) => {
+                question["isEditing"] = true;
+            });
+            setQuestions(questions);
+            setSelectedCategory(route.params.quiz.typeOfQuiz);
+            setDescription(route.params.quiz.description);
+            if (route.params.quiz.isPublic) {
+                setToggleValue(true);
+            }
+            setButtonText("Save");
+        }
         navigation.setOptions({
+            title: title,
             headerRight: () => (
                 <View
                     style={{
@@ -76,8 +96,8 @@ export default function Create({ navigation, route }) {
     const setQuestion = (id, text) => {
         setQuestions((allQuestions) => {
             allQuestions = allQuestions.map((ques) => {
-                if (ques.id == id) {
-                    ques.ques = text;
+                if (ques._id == id) {
+                    ques.question = text;
                 }
                 return ques;
             });
@@ -88,8 +108,8 @@ export default function Create({ navigation, route }) {
     const setOp1 = (id, text) => {
         setQuestions((allQuestions) => {
             allQuestions = allQuestions.map((ques) => {
-                if (ques.id == id) {
-                    ques.option1 = text;
+                if (ques._id == id) {
+                    ques.options[0] = text;
                 }
                 return ques;
             });
@@ -100,8 +120,8 @@ export default function Create({ navigation, route }) {
     const setOp2 = (id, text) => {
         setQuestions((allQuestions) => {
             allQuestions = allQuestions.map((ques) => {
-                if (ques.id == id) {
-                    ques.option2 = text;
+                if (ques._id == id) {
+                    ques.options[1] = text;
                 }
                 return ques;
             });
@@ -111,8 +131,8 @@ export default function Create({ navigation, route }) {
     const setOp3 = (id, text) => {
         setQuestions((allQuestions) => {
             allQuestions = allQuestions.map((ques) => {
-                if (ques.id == id) {
-                    ques.option3 = text;
+                if (ques._id == id) {
+                    ques.options[2] = text;
                 }
                 return ques;
             });
@@ -122,8 +142,8 @@ export default function Create({ navigation, route }) {
     const setOp4 = (id, text) => {
         setQuestions((allQuestions) => {
             allQuestions = allQuestions.map((ques) => {
-                if (ques.id == id) {
-                    ques.option4 = text;
+                if (ques._id == id) {
+                    ques.options[3] = text;
                 }
                 return ques;
             });
@@ -134,7 +154,7 @@ export default function Create({ navigation, route }) {
     const setSelection = (id, answer) => {
         setQuestions((allQuestions) => {
             allQuestions = allQuestions.map((ques) => {
-                if (ques.id == id) {
+                if (ques._id == id) {
                     ques.answer = answer;
                 }
                 return ques;
@@ -143,11 +163,48 @@ export default function Create({ navigation, route }) {
         });
     };
 
-    const deleteItem = (id) => {
+    const deleteQuestion = (item) => {
         setQuestions((allQuestions) => {
-            allQuestions = allQuestions.filter((ques) => ques.id != id);
+            allQuestions = allQuestions.filter((ques) => ques._id != item._id);
             return allQuestions;
         });
+    };
+
+    const updateQuiz = async (quiz, item) => {
+        updateQuizRequest(quiz, (json) => {
+            // console.log("updateQuizRequest Response: ", json);
+            deleteQuestion(item);
+        });
+    };
+
+    const deleteItem = (item) => {
+        if (item.isEditing) {
+            Alert.alert(
+                "Delete this question?",
+                "Are you sure you want to delete this question?",
+                [
+                    {
+                        text: "Cancel",
+                        style: "cancel",
+                    },
+                    {
+                        text: "Delete",
+                        style: "destructive",
+                        onPress: () => {
+                            let ques = questions.filter(
+                                (ques) => ques._id != item._id
+                            );
+                            let quiz = route.params.quiz;
+                            quiz.questions = ques;
+                            quiz = { quiz: quiz };
+                            updateQuiz(quiz, item);
+                        },
+                    },
+                ]
+            );
+            return;
+        }
+        deleteQuestion(item);
     };
 
     const textCallBack = (text) => {
@@ -160,13 +217,16 @@ export default function Create({ navigation, route }) {
                 itr = i * 5;
                 if (text[itr + 4] != undefined) {
                     newQues = {
-                        ques: text[itr],
-                        option1: text[itr + 1],
-                        option2: text[itr + 2],
-                        option3: text[itr + 3],
-                        option4: text[itr + 4],
+                        question: text[itr],
+                        options: [
+                            text[itr + 1],
+                            text[itr + 2],
+                            text[itr + 3],
+                            text[itr + 4],
+                        ],
                         answer: "",
-                        id: makeid(10),
+                        _id: makeid(10),
+                        isEditing: false,
                     };
                     ques.push(newQues);
                 }
@@ -216,7 +276,7 @@ export default function Create({ navigation, route }) {
         if (json["Message"] == undefined) {
             setQuestions([]);
             setQuizName("");
-            setSelectedCategory(-1);
+            // setSelectedCategory(-1);
             setDescription("");
         } else {
             showGeneralError(
@@ -226,47 +286,61 @@ export default function Create({ navigation, route }) {
         }
     };
 
+    const addQuestionsAndUpdateQuiz = async () => {
+        let newQuestions = questions.filter((ques) => !ques.isEditing);
+
+        addQuestionsRequest(newQuestions, (array) => {
+            let quiz = route.params.quiz;
+            quiz.name = quizName;
+            let oldQuestions = questions.filter((ques) => ques.isEditing);
+            oldQuestions = oldQuestions.map((ques) => ques._id);
+            quiz.questions = [...oldQuestions, ...array];
+            quiz.descriptions = description;
+            quiz.typeOfQuiz = selectedCategory;
+            quiz.isPublic = toggleValue;
+            quiz = { quiz: quiz };
+            updateQuizRequest(quiz, (json) => {
+                if (json["Message"] == undefined) {
+                    showGeneralError("Success", "Quiz Successfully updated!");
+                    navigation.pop();
+                    return;
+                }
+                showGeneralError(
+                    "Error",
+                    "There was a problem updating this quiz"
+                );
+            });
+        });
+    };
+
     const createQuiz = () => {
-        console.log(1);
         let noProb = true;
         if (quizName == "" || selectedCategory == -1) {
             noProb = false;
         }
         questions.forEach((question) => {
-            // console.log(question);
             if (
                 question.ques == "" ||
-                question.option1 == "" ||
-                question.option2 == "" ||
-                question.option3 == "" ||
-                question.option4 == "" ||
+                question.options[0] == "" ||
+                question.options[1] == "" ||
+                question.options[2] == "" ||
+                question.options[3] == "" ||
                 question.answer == ""
             ) {
                 noProb = false;
             }
         });
         if (noProb) {
-            console.log(2);
+            if (route.params != null && route.params.quiz != undefined) {
+                addQuestionsAndUpdateQuiz();
+                return;
+            }
             let json = { name: quizName };
-            let ques = [];
-            questions.forEach((question) => {
-                ques.push({
-                    question: question.ques,
-                    options: [
-                        question.option1,
-                        question.option2,
-                        question.option3,
-                        question.option4,
-                    ],
-                    answer: question.answer,
-                });
-            });
-            json["questions"] = ques;
+            json["questions"] = questions;
             json["description"] = description;
             json["typeOfQuiz"] = selectedCategory;
             json["isPublic"] = toggleValue;
             json = { quiz: json };
-            console.log(json);
             addQuiz(json, createQuizCallback);
         } else {
             showGeneralError(
@@ -291,7 +365,7 @@ export default function Create({ navigation, route }) {
                         deleteItem={deleteItem}
                     />
                 )}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item._id}
                 contentContainerStyle={{ padding: 10 }}
                 ListEmptyComponent={() => (
                     <View
@@ -345,6 +419,7 @@ export default function Create({ navigation, route }) {
                             setSelectedCategory(Number(item.value))
                         }
                         zIndex={10000}
+                        defaultValue={selectedCategory}
                     />
                     <View style={{ marginLeft: 10 }}>
                         <ToggleSwitch
@@ -385,7 +460,7 @@ export default function Create({ navigation, route }) {
                             fontSize: 20,
                         }}
                     >
-                        Create
+                        {buttonText}
                     </Text>
                 </TouchableOpacity>
             </View>
