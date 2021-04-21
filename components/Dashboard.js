@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import Home from "./Home";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import UserTab from "./UserTab";
 import Browse from "./Browse";
 import Create from "./Create";
@@ -66,8 +66,8 @@ export default function Dashboard({ navigation }) {
                     options={{
                         tabBarLabel: "LeaderBoard",
                         tabBarIcon: ({ color, size }) => (
-                            <Ionicons
-                                name="create-outline"
+                            <MaterialIcons
+                                name="leaderboard"
                                 size={size}
                                 color={color}
                             />
