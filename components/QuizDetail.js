@@ -33,7 +33,7 @@ export default function QuizDetail({ route, navigation }) {
                 if (data.userScored) {
                     message = "You are a top scorer in this quiz!";
                 }
-                console.log(quiz.max_scores);
+                // console.log(quiz.max_scores);
             });
         }, [])
     );
@@ -113,7 +113,7 @@ export default function QuizDetail({ route, navigation }) {
                             <Text style={{ fontWeight: "bold", fontSize: 15 }}>
                                 {index + 1}
                             </Text>
-                            <Text>{item.playedBy}</Text>
+                            <Text>{item.playedBy.name}</Text>
                             <Text>{item.score}</Text>
                         </View>
                     )}

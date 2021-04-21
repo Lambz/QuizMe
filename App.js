@@ -12,6 +12,7 @@ import SendChallenge from "./components/SendChallenge";
 import Challenges from "./components/Challenges";
 import QuizDetail from "./components/QuizDetail";
 import ChallengesSent from "./components/ChallengesSent";
+import Results from "./components/Results";
 const Stack = createStackNavigator();
 export default function App() {
     return (
@@ -88,7 +89,6 @@ export default function App() {
                     options={{
                         title: "About Challenge",
                         headerBackTitle: "Back",
-                        
                     }}
                 />
                 <Stack.Screen
@@ -97,6 +97,16 @@ export default function App() {
                     // options={{ headerShown: false }}
                     options={{
                         title: "Challenges Sent",
+                        headerBackTitle: "Back",
+                    }}
+                />
+
+                <Stack.Screen
+                    name="Results"
+                    component={Results}
+                    // options={{ headerShown: false }}
+                    options={{
+                        title: "Your Results",
                         headerBackTitle: "Back",
                     }}
                 />

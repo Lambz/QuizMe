@@ -250,6 +250,47 @@ const monthNames = [
 
 export const getFormatedDate = (dateString) => {
     let date = new Date(dateString);
-    console.log(date);
+    // console.log(date);
     return `${date.getDate()} ${monthNames[date.getMonth()]}`;
+};
+
+export const getMonth = (dateString) => {
+    const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+    ];
+    let date = new Date(dateString);
+    return monthNames[date.getMonth()];
+};
+
+export const getDay = (dateString) => {
+    const dayNames = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+    ];
+    let date = new Date(dateString);
+    return dayNames[date.getDay()];
+};
+
+export const getDate = (dateString) => {
+    return new Date(dateString).getDate();
+};
+
+export const getYear = (dateString) => {
+    return new Date(dateString).getFullYear();
 };

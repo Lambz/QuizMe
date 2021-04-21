@@ -46,15 +46,14 @@ export const fetchQuizForMetrics = (index, callback) => {
     data.then((val) => {
         callback(val);
     });
-}
+};
 
 export const fetchQuizByID = (id, callback) => {
     const data = fetchRequest(`${API_LINK}/quiz/id/${id}`);
     data.then((val) => {
         callback(val);
-    })
-    
-}
+    });
+};
 
 export const fetchQuizForCategory = (index, callback) => {
     const category = categories[index].label;
@@ -211,6 +210,15 @@ export const acceptInviteRequest = async (id) => {
 export const getSentInviteRequest = async (callback) => {
     let json = await fetchRequest(`${API_LINK}/user/inviteSent`);
     callback(json);
+};
+
+export const getResultsRequest = async (callback) => {
+    let json = await fetchRequest(`${API_LINK}/user/results`);
+    if (json["Message"] == undefined) {
+        callback(json);
+        return;
+    }
+    callback([]);
 };
 
 async function fetchRequest(url = "") {

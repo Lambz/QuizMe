@@ -17,6 +17,10 @@ export default function Home({ route }) {
     const challengesClicked = () => {
         route.params.moveTo("Challenges");
     };
+
+    const resultsClicked = () => {
+        route.params.moveTo("Results");
+    };
     const checkLogin = async () => {
         const cookie = await getCookies();
         let items = null;
@@ -24,6 +28,16 @@ export default function Home({ route }) {
             setLoggedIn(true);
             items = (
                 <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+                    <TouchableOpacity
+                        onPress={resultsClicked}
+                        style={{ marginRight: 10 }}
+                    >
+                        <MaterialCommunityIcons
+                            name="clipboard-check-multiple-outline"
+                            size={20}
+                            color="#007AFF"
+                        />
+                    </TouchableOpacity>
                     <TouchableOpacity onPress={challengesClicked}>
                         <MaterialCommunityIcons
                             name="sword-cross"
