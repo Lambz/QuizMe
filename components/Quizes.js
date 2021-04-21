@@ -32,6 +32,10 @@ export default function Quizes({ navigation, route }) {
     const quizClicked = (quiz) => {
         navigation.navigate("Create", { quiz: quiz });
     };
+
+    const moveToChallengers = (item) => {
+        navigation.navigate("SendChallenge", { quiz: item });
+    };
     return (
         <View style={styles.container}>
             <FlatList
@@ -40,6 +44,7 @@ export default function Quizes({ navigation, route }) {
                     <QuizItem
                         item={item}
                         quizClicked={quizClicked}
+                        moveToChallengers={moveToChallengers}
                         isLoggedIn={true}
                     />
                 )}

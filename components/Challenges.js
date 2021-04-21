@@ -51,7 +51,7 @@ export default function Challenges({ navigation, route }) {
 
     const acceptHandler = (item) => {
         acceptInviteRequest(item._id);
-        navigation.navigate("Quiz", { quiz: item.quiz });
+        navigation.navigate("QuizDetail", { quiz: item.quiz });
     };
     return (
         <View style={styles.container}>
