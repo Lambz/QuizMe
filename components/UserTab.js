@@ -72,47 +72,80 @@ export default function UserTab({ route }) {
         route.params.moveTo("Quizes");
     };
 
+    const moveToChallengesSent = () => {
+        route.params.moveTo("ChallengesSent");
+    };
+
     const displayProperInfo = () => {
         if (isLoggedIn) {
             return (
                 <View
                     style={{
                         marginTop: 40,
+                        width: "85%",
+                        overflow: "hidden",
                     }}
                 >
-                    <TouchableOpacity
+                    <View
                         style={{
-                            paddingVertical: 10,
-                            borderColor: "#a6efce",
-                            borderWidth: 2,
-                            borderRadius: 10,
-                            paddingHorizontal: 50,
+                            flexDirection: "row",
+                            justifyContent: "space-between",
                         }}
-                        onPress={logoutHandler}
                     >
-                        <Text style={{ textAlign: "center", fontSize: 18 }}>
-                            Logout
-                        </Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{
+                                paddingVertical: 10,
+                                backgroundColor: "#a6efce",
+                                borderRadius: 10,
+                                width: "46%",
+                            }}
+                            onPress={moveToMyQuizes}
+                        >
+                            <Text
+                                style={{
+                                    textAlign: "center",
+                                    color: "#fff",
+                                    fontWeight: "bold",
+                                    fontSize: 16,
+                                }}
+                            >
+                                My Quizes
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{
+                                paddingVertical: 10,
+                                borderColor: "#a6efce",
+                                borderWidth: 2,
+                                borderRadius: 10,
+                                width: "46%",
+                            }}
+                            onPress={moveToChallengesSent}
+                        >
+                            <Text style={{ textAlign: "center", fontSize: 16 }}>
+                                Challenges Sent
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                     <TouchableOpacity
                         style={{
                             paddingVertical: 10,
                             backgroundColor: "#a6efce",
-                            borderRadius: 10,
+                            borderRadius: 25,
                             paddingHorizontal: 50,
-                            marginTop: 20,
+                            marginTop: 10,
                         }}
-                        onPress={moveToMyQuizes}
+                        onPress={logoutHandler}
                     >
                         <Text
                             style={{
                                 textAlign: "center",
+                                fontSize: 20,
                                 color: "#fff",
                                 fontWeight: "bold",
-                                fontSize: 18,
                             }}
                         >
-                            My Quizes
+                            Logout
                         </Text>
                     </TouchableOpacity>
                 </View>

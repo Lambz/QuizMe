@@ -32,27 +32,29 @@ export const fetchCategoriesWithQuiz = async (callback) => {
 
 export const fetchQuizForMetrics = (index, callback) => {
     let data = [];
-    switch(index) {
-        case 0: data = fetchRequest(`${API_LINK}/quiz/trending`);
-                break;
-        case 1: data = fetchRequest(`${API_LINK}/quiz/trending`);
-                break;
-        case 2: data = fetchRequest(`${API_LINK}/quiz/trending`);
-                break;
+    switch (index) {
+        case 0:
+            data = fetchRequest(`${API_LINK}/quiz/trending`);
+            break;
+        case 1:
+            data = fetchRequest(`${API_LINK}/quiz/trending`);
+            break;
+        case 2:
+            data = fetchRequest(`${API_LINK}/quiz/trending`);
+            break;
     }
-    data.then(val => {
+    data.then((val) => {
         callback(val);
     });
-    
-}
+};
 
 export const fetchQuizForCategory = (index, callback) => {
     const category = categories[index].label;
     const data = fetchRequest(`${API_LINK}/quiz/category/${index}`);
-    data.then(val => {
+    data.then((val) => {
         callback(val);
-    })
-}
+    });
+};
 
 export const logoutUser = async (callback) => {
     await fetchRequest(`${API_LINK}/auth/logout`);
@@ -196,6 +198,11 @@ export const getInvitesRequest = async (callback) => {
 
 export const acceptInviteRequest = async (id) => {
     fetchRequest(`${API_LINK}/user/acceptInvite/${id}`);
+};
+
+export const getSentInviteRequest = async (callback) => {
+    let json = await fetchRequest(`${API_LINK}/user/inviteSent`);
+    callback(json);
 };
 
 async function fetchRequest(url = "") {

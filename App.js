@@ -10,6 +10,7 @@ import BrowseItem from "./components/BrowseItem";
 import ImportQuestions from "./components/ImportQuestions";
 import SendChallenge from "./components/SendChallenge";
 import Challenges from "./components/Challenges";
+import ChallengesSent from "./components/ChallengesSent";
 const Stack = createStackNavigator();
 export default function App() {
     return (
@@ -76,10 +77,18 @@ export default function App() {
                     options={{
                         title: "Explore",
                         headerBackTitle: "Back",
-                        
                     }}
                 />
 
+                <Stack.Screen
+                    name="ChallengesSent"
+                    component={ChallengesSent}
+                    // options={{ headerShown: false }}
+                    options={{
+                        title: "Challenges Sent",
+                        headerBackTitle: "Back",
+                    }}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     );
