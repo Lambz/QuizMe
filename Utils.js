@@ -232,3 +232,24 @@ export const showGeneralError = (title, message) => {
         },
     ]);
 };
+
+const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+];
+
+export const getFormatedDate = (dateString) => {
+    let date = new Date(dateString);
+    console.log(date);
+    return `${date.getDate()} ${monthNames[date.getMonth()]}`;
+};

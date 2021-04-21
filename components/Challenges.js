@@ -50,8 +50,7 @@ export default function Challenges({ navigation, route }) {
     };
 
     const acceptHandler = (item) => {
-        // acceptInviteRequest(item._id);
-        console.log({ quiz: item.quiz });
+        acceptInviteRequest(item._id);
         navigation.navigate("Quiz", { quiz: item.quiz });
     };
     return (
