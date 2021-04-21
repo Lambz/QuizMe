@@ -15,10 +15,10 @@ import {
     fetchQuizForMetrics,
     fetchQuizForCategory,
 } from "../networking/DatabaseCommunications";
-import { getRandomImage, categories } from "../Utils";
+import { getCategoriesWithImages } from "../Utils";
 
 const { width: screenWidth } = Dimensions.get("window");
-
+const categories = getCategoriesWithImages();
 export default function Browse({ route }) {
     useFocusEffect(
         React.useCallback(() => {
@@ -54,7 +54,7 @@ export default function Browse({ route }) {
                 onPress={() => imageClicked({ index })}
             >
                 <ParallaxImage
-                    source={getRandomImage(item.value)}
+                    source={item.image}
                     containerStyle={styles.imageContainer}
                     style={styles.image}
                     parallaxFactor={0.4}

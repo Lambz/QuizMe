@@ -157,6 +157,13 @@ export const categories = [
     { label: "Science & Math", value: 13 },
 ];
 
+export const getCategoriesWithImages = () => {
+    return categories.map((category) => {
+        category["image"] = getRandomImage(category.value);
+        return category;
+    });
+};
+
 export const getRandomImage = (index) => {
     // console.log(index);
     if (index > images.length) {
