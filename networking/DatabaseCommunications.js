@@ -80,6 +80,11 @@ export const getQuizesByUser = async (callback) => {
     callback(json);
 };
 
+export const getDashBoard = async (callback) => {
+    let json = await fetchRequest(`${API_LINK}/leaderboard/`);
+    json.then(data => callback(data));
+};
+
 export const updateQuestionRequest = async (data, callback) => {
     let json = await postRequest(
         `${API_LINK}/question/update/${data._id}`,

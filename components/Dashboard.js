@@ -7,6 +7,7 @@ import { Feather, Ionicons } from "@expo/vector-icons";
 import UserTab from "./UserTab";
 import Browse from "./Browse";
 import Create from "./Create";
+import LeaderBoard from "./LeaderBoard";
 
 const Tab = createBottomTabNavigator();
 export default function Dashboard({ navigation }) {
@@ -58,12 +59,12 @@ export default function Dashboard({ navigation }) {
                     }}
                 />
 
-                {/* <Tab.Screen
-                    name="Create"
-                    component={Create}
+                <Tab.Screen
+                    name="LeaderBoard"
+                    component={LeaderBoard}
                     initialParams={{ changeHeader: changeHeader }}
                     options={{
-                        tabBarLabel: "Create",
+                        tabBarLabel: "LeaderBoard",
                         tabBarIcon: ({ color, size }) => (
                             <Ionicons
                                 name="create-outline"
@@ -72,7 +73,7 @@ export default function Dashboard({ navigation }) {
                             />
                         ),
                     }}
-                /> */}
+                />
                 <Tab.Screen
                     name="UserTab"
                     component={UserTab}
