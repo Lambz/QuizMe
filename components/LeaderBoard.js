@@ -25,7 +25,7 @@ export default function LeaderBoard({route, navigation}) {
                         rank: getBadgeForGames(val.gamesPlayed)
                     })
                 })
-                dashboardData.sort((a,b) => a.score > b.score ? 1 : -1);
+                dashboardData.sort((a,b) => a.score > b.score ? -1 : 1);
                 setDashboard(dashboardData);
                 dashboardData = data;
                 console.log(data);
