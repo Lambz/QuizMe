@@ -43,6 +43,13 @@ export const fetchQuizForMetrics = (index, callback) => {
     data.then(val => {
         callback(val);
     });
+}
+
+export const fetchQuizByID = (id, callback) => {
+    const data = fetchRequest(`${API_LINK}/quiz/id/${id}`);
+    data.then((val) => {
+        callback(val);
+    })
     
 }
 
