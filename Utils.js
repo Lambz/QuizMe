@@ -140,6 +140,14 @@ export const images = [
     ],
 ];
 
+export const getBadgeForGames = (games) => {
+    switch(games) {
+        case games < 10: return require("./assets/badges/cadet.png");
+        case games >= 10 && games < 20: return require("./assets/badges/lieutinent.png");
+        case games >= 20: return require("./assets/badges/general.png");
+    }
+}
+
 export const categories = [
     { label: "Generic", value: 0 },
     { label: "Movies", value: 1 },
