@@ -80,8 +80,8 @@ export const getQuizesByUser = async (callback) => {
     callback(json);
 };
 
-export const getDashBoard = async (callback) => {
-    let json = await fetchRequest(`${API_LINK}/leaderboard/`);
+export const getDashBoard = (callback) => {
+    let json = fetchRequest(`${API_LINK}/leaderboard/`);
     json.then(data => callback(data));
 };
 
