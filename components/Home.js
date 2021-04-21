@@ -65,7 +65,7 @@ export default function Home({ route }) {
 
     const quizClicked = (quiz) => {
         console.log(quiz);
-        route.params.moveTo("Quiz", { quiz: quiz });
+        route.params.moveTo("QuizDetail", { quiz: quiz });
     };
 
     const moveToChallengers = (item) => {

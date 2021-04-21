@@ -43,11 +43,6 @@ export default function ChallengesSent({ navigation, route }) {
         );
     };
 
-    const acceptHandler = (item) => {
-        acceptInviteRequest(item._id);
-        navigation.navigate("Quiz", { quiz: item.quiz });
-    };
-
     const showResult = (item) => {
         let text = "Not accepted yet";
         if (item.accepted) {
@@ -62,7 +57,7 @@ export default function ChallengesSent({ navigation, route }) {
     };
 
     const moveToQuiz = (item) => {
-        navigation.navigate("Quiz", { quiz: item.quiz });
+        navigation.navigate("QuizDetail", { quiz: item.quiz });
     };
     return (
         <View style={styles.container}>
