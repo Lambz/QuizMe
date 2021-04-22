@@ -14,6 +14,7 @@ import QuizDetail from "./components/QuizDetail";
 import ChallengesSent from "./components/ChallengesSent";
 import Results from "./components/Results";
 import QuizResult from "./components/QuizResult";
+import SearchChallenge from "./components/SearchChallenge";
 const Stack = createStackNavigator();
 export default function App() {
     return (
@@ -117,7 +118,16 @@ export default function App() {
                     component={QuizResult}
                     // options={{ headerShown: false }}
                     options={{
-                        title: "Your Result",
+                        headerShown: false
+                    }}
+                />
+
+                <Stack.Screen
+                    name="SearchChallenge"
+                    component={SearchChallenge}
+                    // options={{ headerShown: false }}
+                    options={{
+                        title: "Search Quiz",
                         headerBackTitle: "Back",
                     }}
                 />

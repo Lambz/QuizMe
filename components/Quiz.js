@@ -33,10 +33,7 @@ export default function Quiz({ navigation, route }) {
         () =>
             navigation.addListener("beforeRemove", (e) => {
                 if (isFinished) {
-                    navigation.navigate('QuizResult', {quiz: {
-                        score: score,
-                        totalQuestions: route.params.quiz.questions.length
-                    }})
+                    return;
                 }
                 e.preventDefault();
                 Alert.alert(
@@ -146,39 +143,43 @@ export default function Quiz({ navigation, route }) {
                     quiz: route.params.quiz,
                     score: currentScore,
                 });
+                navigation.navigate('QuizResult', {
+                    score: score,
+                    totalQuestions: route.params.quiz.questions.length
+                })
             }
         }, 1000);
     };
-    const displayWinner = () => {
-        console.log(
-            "displayWinner: ",
-            isFinished,
-            score,
-            route.params.quiz.questions.length
-        );
-        if (isFinished && score / route.params.quiz.questions.length > 0.5) {
-            playSound(sounds.winner);
-            return (
-                <View
-                    style={{
-                        zIndex: 50000,
-                        position: "absolute",
-                        height: "100%",
-                        width: "100%",
-                    }}
-                >
-                    <Image
-                        style={{
-                            zIndex: 50000,
-                            height: "100%",
-                            width: "100%",
-                        }}
-                        source={require("../assets/winner.gif")}
-                    />
-                </View>
-            );
-        }
-    };
+    // const displayWinner = () => {
+    //     console.log(
+    //         "displayWinner: ",
+    //         isFinished,
+    //         score,
+    //         route.params.quiz.questions.length
+    //     );
+    //     if (isFinished && score / route.params.quiz.questions.length > 0.5) {
+    //         playSound(sounds.winner);
+    //         return (
+    //             <View
+    //                 style={{
+    //                     zIndex: 50000,
+    //                     position: "absolute",
+    //                     height: "100%",
+    //                     width: "100%",
+    //                 }}
+    //             >
+    //                 <Image
+    //                     style={{
+    //                         zIndex: 50000,
+    //                         height: "100%",
+    //                         width: "100%",
+    //                     }}
+    //                     source={require("../assets/winner.gif")}
+    //                 />
+    //             </View>
+    //         );
+    //     }
+    // };
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.container}>
@@ -280,7 +281,7 @@ export default function Quiz({ navigation, route }) {
                         Score: {score}
                     </Text>
                 </View>
-                {displayWinner()}
+                {/* {displayWinner()} */}
             </View>
         </SafeAreaView>
     );

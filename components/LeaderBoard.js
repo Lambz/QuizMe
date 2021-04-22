@@ -6,23 +6,23 @@ import { getBadgeForGames } from '../Utils';
 
 export default function LeaderBoard({route, navigation}) {
     const [dashboard, setDashboard] = useState([]);
-    let dashboardData = [];
-
-    const userDetails = (index) => {
-
+    
+    const userDetails = (item) => {
+        console.log("Updated Dashboard", item.id )
+        // navigation.navigate('SearchChallenge', dashboard[index]._id);
     }
 
     useFocusEffect(
         React.useCallback(() => {
             route.params.changeHeader("Leaderboard")
             getDashBoard((data) => {
-                dashboardData = [];
+                let dashboardData = [];
                 data.forEach(val => {
                     dashboardData.push({
                         score: val.score,
                         gamesPlayed: val.gamesPlayed,
                         user: val.user.name,
-                        rank: getBadgeForGames(val.gamesPlayed)
+                        id: val.user._id
                     })
                 })
                 dashboardData.sort((a,b) => a.score > b.score ? -1 : 1);
@@ -47,7 +47,7 @@ export default function LeaderBoard({route, navigation}) {
                 <Text style={{fontSize: 18, fontWeight: "bold"}}>Score</Text>
             </View>
             <FlatList style={styles.cardContainer} data={dashboard} renderItem={({item, index}) => (
-                <TouchableOpacity style={styles.listStyle} onPress={userDetails({index})}>
+                <TouchableOpacity style={styles.listStyle} onPress={userDetails(item)}>
                     <View style={styles.listContainer}>
                         {/* <Image source={item.rank}></Image> */}
                         <Text>{index + 1}</Text>
