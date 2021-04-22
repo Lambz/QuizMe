@@ -33,7 +33,10 @@ export default function Quiz({ navigation, route }) {
         () =>
             navigation.addListener("beforeRemove", (e) => {
                 if (isFinished) {
-                    return;
+                    navigation.navigate('QuizResult', {quiz: {
+                        score: score,
+                        totalQuestions: route.params.quiz.questions.length
+                    }})
                 }
                 e.preventDefault();
                 Alert.alert(
