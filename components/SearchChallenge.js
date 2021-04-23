@@ -8,33 +8,46 @@ import {
 import QuizItem from "./subcomponents/QuizItem";
 
 export default function ({ route, navigation }) {
+    const [quizData, setQuizData] = useState([]);
     const [quizzes, setQuizzes] = useState([]);
     const [isLoading, setLoading] = useState([]);
-
-    let searchText = "";
-    console.log(route.params.id);
+    const [searchText, setSearchText] = useState("");
     if (isLoading) {
         fetchAllQuizesForChallenge((data) => {
             if (data) {
+                setQuizData(data);
                 setQuizzes(data);
             }
         });
         setLoading(false);
     }
 
+    const searchChangeTextHandler = (text) => {
+        setSearchText(text);
+        let filtered = quizData.filter((quiz) => quiz.name.includes(text));
+        setQuizzes(filtered);
+    };
+
     const quizClicked = (item) => {
-        sendInvite({
-            quiz: item._id,
-            sendTo: route.params.id
-        }, (data) => {
-            if(data) {
-                Alert.alert("Invite Sent", `Your invitation has been successfully sent to ${route.params.name}!`);
+        sendInvite(
+            {
+                quiz: item._id,
+                sendTo: route.params.id,
+            },
+            (data) => {
+                if (data) {
+                    Alert.alert(
+                        "Invite Sent",
+                        `Your invitation has been successfully sent to ${route.params.name}!`
+                    );
+                } else {
+                    Alert.alert(
+                        "Invite Sending Error",
+                        `Your invitation has not been sent!`
+                    );
+                }
             }
-            else{
-                Alert.alert("Invite Sending Error", `Your invitation has not been sent!`);
-            }
-        })
-        
+        );
     };
 
     const emptyQuiz = () => {
@@ -51,6 +64,7 @@ export default function ({ route, navigation }) {
                 placeholder="Search Quizzes"
                 value={searchText}
                 platform="ios"
+                onChangeText={searchChangeTextHandler}
             />
             <FlatList
                 data={quizzes}

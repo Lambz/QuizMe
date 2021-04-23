@@ -37,7 +37,7 @@ export default function LeaderBoard({ route }) {
                 dashboardData.sort((a, b) => (a.score > b.score ? -1 : 1));
                 setDashboard(dashboardData);
                 dashboardData = data;
-                console.log(data);
+                // console.log(data);
             });
         }, [])
     );
@@ -70,7 +70,14 @@ export default function LeaderBoard({ route }) {
                         onPress={() => userDetails(item)}
                     >
                         <View style={styles.listContainer}>
-                            {/* <Image source={item.rank}></Image> */}
+                            <Image
+                                source={getBadgeForGames(item.gamesPlayed)}
+                                style={{
+                                    resizeMode: "contain",
+                                }}
+                                width={35}
+                                height={35}
+                            />
                             <Text>{index + 1}</Text>
                             <Text>{item.user}</Text>
                             <Text>{item.gamesPlayed}</Text>

@@ -140,15 +140,23 @@ export const images = [
     ],
 ];
 
+const badges = [
+    require("./assets/badges/cadet.png"),
+    require("./assets/badges/lieutinent.png"),
+    require("./assets/badges/general.png"),
+];
+
 export const getBadgeForGames = (games) => {
-    switch (games) {
-        case games < 10:
-            return require("./assets/badges/cadet.png");
-        case games >= 10 && games < 20:
-            return require("./assets/badges/lieutinent.png");
-        case games >= 20:
-            return require("./assets/badges/general.png");
+    console.log("games: ", games, typeof games);
+    let image;
+    if (games < 10) {
+        image = badges[0];
+    } else if (games >= 10 && games < 20) {
+        image = badges[1];
+    } else {
+        image = badges[2];
     }
+    return image;
 };
 
 export const categories = [
