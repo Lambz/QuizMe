@@ -8,6 +8,7 @@ import {
     FlatList,
     TouchableOpacity,
     SafeAreaView,
+    KeyboardAvoidingView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { detect } from "../networking/Vision";
@@ -366,121 +367,129 @@ export default function Create({ navigation, route }) {
         }
     };
     return (
-        <SafeAreaView style={styles.container}>
-            <FlatList
-                data={questions}
-                renderItem={({ item }) => (
-                    <EditableQuestion
-                        item={item}
-                        setQ={setQuestion}
-                        setOp1={setOp1}
-                        setOp2={setOp2}
-                        setOp3={setOp3}
-                        setOp4={setOp4}
-                        setSelection={setSelection}
-                        deleteItem={deleteItem}
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior="padding"
+            enabled
+        >
+            <View style={[styles.container, { paddingBottom: 40 }]}>
+                <FlatList
+                    data={questions}
+                    renderItem={({ item }) => (
+                        <EditableQuestion
+                            item={item}
+                            setQ={setQuestion}
+                            setOp1={setOp1}
+                            setOp2={setOp2}
+                            setOp3={setOp3}
+                            setOp4={setOp4}
+                            setSelection={setSelection}
+                            deleteItem={deleteItem}
+                        />
+                    )}
+                    keyExtractor={(item) => item._id}
+                    contentContainerStyle={{ padding: 10 }}
+                    ListEmptyComponent={() => (
+                        <View
+                            style={{
+                                alignItems: "center",
+                                marginTop: 20,
+                            }}
+                        >
+                            <Text style={{ fontSize: 20 }}>
+                                No questions yet
+                            </Text>
+                        </View>
+                    )}
+                />
+                <View style={{ padding: 10 }}>
+                    <TextInput
+                        placeholder="Quiz Name"
+                        style={{ marginBottom: 10, fontSize: 20 }}
+                        onChangeText={setQuizName}
+                        value={quizName}
                     />
-                )}
-                keyExtractor={(item) => item._id}
-                contentContainerStyle={{ padding: 10 }}
-                ListEmptyComponent={() => (
+
+                    <TextInput
+                        placeholder="Description"
+                        style={{ marginBottom: 10, fontSize: 16 }}
+                        onChangeText={setDescription}
+                        value={description}
+                    />
                     <View
                         style={{
+                            flexDirection: "row",
+                            paddingVertical: 5,
                             alignItems: "center",
-                            marginTop: 20,
                         }}
                     >
-                        <Text style={{ fontSize: 20 }}>No questions yet</Text>
-                    </View>
-                )}
-            />
-            <View style={{ padding: 10 }}>
-                <TextInput
-                    placeholder="Quiz Name"
-                    style={{ marginBottom: 10, fontSize: 20 }}
-                    onChangeText={setQuizName}
-                    value={quizName}
-                />
-
-                <TextInput
-                    placeholder="Description"
-                    style={{ marginBottom: 10, fontSize: 16 }}
-                    onChangeText={setDescription}
-                    value={description}
-                />
-                <View
-                    style={{
-                        flexDirection: "row",
-                        paddingVertical: 5,
-                        alignItems: "center",
-                    }}
-                >
-                    <DropDownPicker
-                        items={categories}
-                        containerStyle={{
-                            height: 40,
-                            zIndex: 10000,
-                            width: "65%",
-                        }}
-                        style={{ backgroundColor: "#fafafa", zIndex: 10 }}
-                        itemStyle={{
-                            justifyContent: "flex-start",
-                            zIndex: 10000,
-                        }}
-                        dropDownStyle={{
-                            backgroundColor: "#fafafa",
-                            zIndex: 10000,
-                        }}
-                        onChangeItem={(item) =>
-                            setSelectedCategory(Number(item.value))
-                        }
-                        zIndex={10000}
-                        defaultValue={selectedCategory}
-                    />
-                    <View style={{ marginLeft: 10 }}>
-                        <ToggleSwitch
-                            text={{
-                                on: "Public",
-                                off: "Private",
-                                activeTextColor: "white",
-                                inactiveTextColor: "#B7B8BA",
+                        <DropDownPicker
+                            items={categories}
+                            containerStyle={{
+                                height: 40,
+                                zIndex: 10000,
+                                width: "65%",
                             }}
-                            textStyle={{ fontWeight: "bold" }}
-                            color={{
-                                indicator: "white",
-                                active: "rgba(32, 193, 173, 1)",
-                                inactive: "rgba( 247, 247, 247, 1)",
-                                activeBorder: "#41B4A4",
-                                inactiveBorder: "#E9E9E9",
+                            style={{ backgroundColor: "#fafafa", zIndex: 10 }}
+                            itemStyle={{
+                                justifyContent: "flex-start",
+                                zIndex: 10000,
                             }}
-                            active={toggleValue}
-                            disabled={false}
-                            width={60}
-                            radius={25}
-                            onValueChange={setToggleValue}
+                            dropDownStyle={{
+                                backgroundColor: "#fafafa",
+                                zIndex: 10000,
+                            }}
+                            onChangeItem={(item) =>
+                                setSelectedCategory(Number(item.value))
+                            }
+                            zIndex={10000}
+                            defaultValue={selectedCategory}
                         />
+                        <View style={{ marginLeft: 10 }}>
+                            <ToggleSwitch
+                                text={{
+                                    on: "Public",
+                                    off: "Private",
+                                    activeTextColor: "white",
+                                    inactiveTextColor: "#B7B8BA",
+                                }}
+                                textStyle={{ fontWeight: "bold" }}
+                                color={{
+                                    indicator: "white",
+                                    active: "rgba(32, 193, 173, 1)",
+                                    inactive: "rgba( 247, 247, 247, 1)",
+                                    activeBorder: "#41B4A4",
+                                    inactiveBorder: "#E9E9E9",
+                                }}
+                                active={toggleValue}
+                                disabled={false}
+                                width={60}
+                                radius={25}
+                                onValueChange={setToggleValue}
+                            />
+                        </View>
                     </View>
-                </View>
-                <TouchableOpacity
-                    style={{
-                        padding: 10,
-                        backgroundColor: "#007AFF",
-                        borderRadius: 10,
-                    }}
-                    onPress={createQuiz}
-                >
-                    <Text
+                    <TouchableOpacity
                         style={{
-                            color: "#fff",
-                            textAlign: "center",
-                            fontSize: 20,
+                            padding: 10,
+                            backgroundColor: "#007AFF",
+                            borderRadius: 10,
                         }}
+                        onPress={createQuiz}
                     >
-                        {buttonText}
-                    </Text>
-                </TouchableOpacity>
+                        <Text
+                            style={{
+                                color: "#fff",
+                                textAlign: "center",
+                                fontSize: 20,
+                            }}
+                        >
+                            {buttonText}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-        </SafeAreaView>
+        </KeyboardAvoidingView>
     );
 }
 

@@ -7,11 +7,13 @@ import {
     Image,
     TextInput,
     TouchableOpacity,
+    KeyboardAvoidingView,
 } from "react-native";
 import {
     logoutUser,
     loginUserRequest,
     signUpUserRequest,
+    getCurrentUserRequest,
 } from "../networking/DatabaseCommunications";
 import { getCookies, showGeneralError } from "../Utils";
 import Login from "./subcomponents/Login";
@@ -19,6 +21,7 @@ import SignUp from "./subcomponents/SignUp";
 export default function UserTab({ route }) {
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [login, setLogin] = useState(true);
+    const [username, setUsername] = useState("");
 
     const checkForLoggedIn = async () => {
         let cookies = await getCookies();
@@ -30,6 +33,13 @@ export default function UserTab({ route }) {
         React.useCallback(() => {
             route.params.changeHeader("User Tab", null, false);
             checkForLoggedIn();
+            getCurrentUserRequest((json) => {
+                if (json != null) {
+                    setUsername(json.name);
+                    return;
+                }
+                setUsername("");
+            });
             return () => {
                 // route.params.deRegisterFocus();
             };
@@ -55,6 +65,7 @@ export default function UserTab({ route }) {
         logoutUser(() => {
             setLoggedIn(false);
             setLogin(true);
+            setUsername("");
         });
     };
 
@@ -86,6 +97,15 @@ export default function UserTab({ route }) {
                         overflow: "hidden",
                     }}
                 >
+                    <Text
+                        style={{
+                            textAlign: "center",
+                            fontSize: 20,
+                            marginBottom: 20,
+                        }}
+                    >
+                        Hello {username}!
+                    </Text>
                     <View
                         style={{
                             flexDirection: "row",
@@ -164,7 +184,11 @@ export default function UserTab({ route }) {
     };
 
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior="padding"
+            enabled
+        >
             <View
                 style={{
                     shadowColor: "#aaaaaa",
@@ -188,7 +212,7 @@ export default function UserTab({ route }) {
                 </Text>
             </View>
             {displayProperInfo()}
-        </View>
+        </KeyboardAvoidingView>
     );
 }
 
