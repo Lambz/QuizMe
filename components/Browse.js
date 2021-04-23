@@ -22,7 +22,7 @@ const categories = getCategoriesWithImages();
 export default function Browse({ route }) {
     useFocusEffect(
         React.useCallback(() => {
-            route.params.changeHeader("Browse", null);
+            route.params.changeHeader("Browse", null, false);
             return () => {
                 // route.params.deRegisterFocus();
             };
@@ -68,7 +68,10 @@ export default function Browse({ route }) {
     };
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView
+            style={styles.container}
+            contentContainerStyle={{ paddingTop: 50, paddingLeft: 10 }}
+        >
             <Text style={styles.headerText}>Discover your next</Text>
             <View style={styles.metrics}>
                 <TouchableOpacity
