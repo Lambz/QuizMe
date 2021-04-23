@@ -64,7 +64,7 @@ export default function QuizResult({ route, navigation }) {
                 style={{ paddingTop: 50, width: "100%" }}
             >
                 {displayWinner()}
-                <View styles={styles.card}>
+                <View>
                     <Text
                         style={{
                             fontSize: 33,
@@ -120,20 +120,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: "row",
-    },
-    card: {
-        alignSelf: "center",
-        shadowColor: "black",
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 6,
-        shadowOpacity: 0.26,
-        elevation: 8,
-        padding: 20,
-        borderRadius: 10,
-        margin: 10,
-        height: 300,
-        width: 400,
-        backgroundColor: "#f8f8f8"
     },
     button: {
         flexDirection: "row",

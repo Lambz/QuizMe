@@ -5,6 +5,7 @@ import {
     storeSetCookies,
     categories,
 } from "../Utils";
+import { call } from "react-native-reanimated";
 const Networking = NativeModules.Networking;
 
 const API_LINK = "http://localhost:3000";
@@ -212,6 +213,15 @@ export const getInvitesRequest = async (callback) => {
     }
     callback(null);
 };
+
+
+export const sendInvite = async (data, callback) => {
+    let json = await postRequest(`${API_LINK}/user/sendInvite`, data);
+    if(json["Message"] == "Invite Sent") {
+        callback(true);
+    }
+    callback(false);
+}
 
 export const acceptInviteRequest = async (id) => {
     fetchRequest(`${API_LINK}/user/acceptInvite/${id}`);

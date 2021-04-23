@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, Text, View, FlatList, Alert } from "react-native";
 import { SearchBar } from "react-native-elements";
 import {
     fetchAllQuizesForChallenge,
-    fetchQuizByID,
+    sendInvite,
 } from "../networking/DatabaseCommunications";
 import QuizItem from "./subcomponents/QuizItem";
-
-// let isLoading = true;
 
 export default function ({ route, navigation }) {
     const [quizzes, setQuizzes] = useState([]);
@@ -18,24 +16,26 @@ export default function ({ route, navigation }) {
     if (isLoading) {
         fetchAllQuizesForChallenge((data) => {
             if (data) {
-                // isLoading = false;
                 setQuizzes(data);
             }
         });
         setLoading(false);
     }
-    // useFocusEffect(
-    //     React.useCallback(() => {
-    //         fetchAllQuizes((data) => {
-    //             if(data) {
-    //                 setQuizzes(data);
-    //             }
 
-    //         })
-    //     }, [])
-    // )
-
-    const quizClicked = (item) => {};
+    const quizClicked = (item) => {
+        sendInvite({
+            quiz: item._id,
+            sendTo: route.params.id
+        }, (data) => {
+            if(data) {
+                Alert.alert("Invite Sent", `Your invitation has been successfully sent to ${route.params.name}!`);
+            }
+            else{
+                Alert.alert("Invite Sending Error", `Your invitation has not been sent!`);
+            }
+        })
+        
+    };
 
     const emptyQuiz = () => {
         return (

@@ -90,16 +90,7 @@ export default function Home({ route }) {
     };
 
     return (
-        <ScrollView style={styles.container}>
-            <Text style={{fontSize: 33, fontWeight: "bold", marginBottom: 20}}>Welcome User</Text>
-            <View style={[styles.card, {backgroundColor: "#ff6f52"}]}>
-                <Image source={require('../assets/badges/cadet.png')}></Image>
-                <Text style={{fontSize: 23, marginBottom: 10}}>Rank Cadet</Text>
-            </View>
-            <View style={[styles.card, {backgroundColor: "#e5e85a", marginBottom: 10}]}>
-                <Text style={{fontSize: 23}}>Games Played</Text>
-            </View>
-            <Text style={{fontSize: 33, fontWeight: "bold", marginBottom: 20}}>Explore Quizzes</Text>
+        <View style={styles.container}>
             {/* <Button title="Login" onPress={sendRequest} /> */}
             <FlatList
                 data={quizes}
@@ -128,7 +119,7 @@ export default function Home({ route }) {
                     <RefreshControl onRefresh={() => setLoading(true)} />
                 }
             />
-        </ScrollView>
+        </View>
     );
 }
 
