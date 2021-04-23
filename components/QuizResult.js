@@ -24,6 +24,11 @@ export default function QuizResult({ route, navigation }) {
         imageTimer = false;
     }
 
+    const playAgainHandler = () => {
+        route.params.resetQuiz();
+        navigation.pop();
+    };
+
     const displayWinner = () => {
         if (
             imageTimer &&
@@ -89,6 +94,7 @@ export default function QuizResult({ route, navigation }) {
                                 borderRadius: 10,
                                 paddingHorizontal: 50,
                             }}
+                            onPress={playAgainHandler}
                         >
                             <Text>Play Again</Text>
                         </TouchableOpacity>
