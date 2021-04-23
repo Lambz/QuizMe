@@ -2,19 +2,36 @@ import React, { useState } from 'react';
 import {useFocusEffect} from '@react-navigation/native';
 import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from "react-native";
 import { SearchBar } from "react-native-elements";
-import { fetchAllQuizes } from '../networking/DatabaseCommunications';
+import { fetchAllQuizesForChallenge } from '../networking/DatabaseCommunications';
 import { QuizItem } from './subcomponents/QuizItem';
+
+let isLoading = true;
 
 export default function({route, navigation}) {
     const [quizzes, setQuizzes] = useState([]);
+    
+    let searchText = "";
 
-    useFocusEffect(
-        React.useCallback(() => {
-            fetchAllQuizes((data) => {
+    if(isLoading) {
+        fetchAllQuizesForChallenge((data) => {
+            if(data) {
+                isLoading = false;
                 setQuizzes(data);
-            })
-        }, [])
-    )
+
+            }
+            
+        }) 
+    }
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         fetchAllQuizes((data) => {
+    //             if(data) {
+    //                 setQuizzes(data);
+    //             }
+                
+    //         })
+    //     }, [])
+    // )
 
     const itemClicked = (item) => {
         
@@ -33,7 +50,7 @@ export default function({route, navigation}) {
             <SearchBar
                 placeholder="Search Quizzes"
                 value={searchText}
-
+                
             />
             <FlatList data={quizzes} renderItem={({item}) => (
                 <QuizItem item={item} quizClicked={itemClicked}></QuizItem>

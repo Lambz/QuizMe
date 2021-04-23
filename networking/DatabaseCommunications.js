@@ -20,6 +20,12 @@ export const fetchAllQuizes = async (callback) => {
     callback(json);
 };
 
+export const fetchAllQuizesForChallenge = async (callback) => {
+    let json = await fetchRequest(`${API_LINK}/quiz/minified`);
+    callback(json);
+};
+
+
 export const fetchCategoriesWithQuiz = async (callback) => {
     // const data = await fetchRequest(`${API_LINK}/quiz/categories`);
     // const categoryData = data.Categories;

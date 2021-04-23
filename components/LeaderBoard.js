@@ -4,12 +4,15 @@ import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from "react
 import { getDashBoard } from '../networking/DatabaseCommunications';
 import { getBadgeForGames } from '../Utils';
 
-export default function LeaderBoard({route, navigation}) {
+export default function LeaderBoard({route}) {
     const [dashboard, setDashboard] = useState([]);
     
     const userDetails = (item) => {
         console.log("Updated Dashboard", item.id )
-        // navigation.navigate('SearchChallenge', dashboard[index]._id);
+        route.params.moveTo('SearchChallenge', {
+            id: item.id,
+            name: item.name
+        });
     }
 
     useFocusEffect(
@@ -47,7 +50,7 @@ export default function LeaderBoard({route, navigation}) {
                 <Text style={{fontSize: 18, fontWeight: "bold"}}>Score</Text>
             </View>
             <FlatList style={styles.cardContainer} data={dashboard} renderItem={({item, index}) => (
-                <TouchableOpacity style={styles.listStyle} onPress={userDetails(item)}>
+                <TouchableOpacity style={styles.listStyle} onPress={() => userDetails(item)}>
                     <View style={styles.listContainer}>
                         {/* <Image source={item.rank}></Image> */}
                         <Text>{index + 1}</Text>

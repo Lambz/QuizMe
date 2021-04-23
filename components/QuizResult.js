@@ -2,8 +2,11 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions } from "react-native";
 import { Audio } from "expo-av";
 import { sounds } from "../Utils";
+import { LinearGradient } from "expo-linear-gradient";
 
 const {width: screenWidth} = Dimensions.get("window");
+
+let imageTimer = true;
 
 export default function QuizResult({route, navigation}) {
 
@@ -12,15 +15,16 @@ export default function QuizResult({route, navigation}) {
         const { sound } = await Audio.Sound.createAsync(audio);
         await sound.playAsync();
         await sound.unloadAsync();
+        imageTimer = false;
     }
 
     const displayWinner = () => {
-        if (route.params.score / route.params.totalQuestions > 0.5) {
+        if (imageTimer && route.params.score / route.params.totalQuestions > 0.1) {
             playSound(sounds.winner);
             return (
                 <View
                     style={{
-                        zIndex: 2,
+                        zIndex: -1,
                         position: "absolute",
                         height: "100%",
                         width: "100%",
@@ -28,7 +32,7 @@ export default function QuizResult({route, navigation}) {
                 >
                     <Image
                         style={{
-                            zIndex: 2,
+                            zIndex: -1,
                             height: "100%",
                             width: "100%",
                         }}
@@ -41,6 +45,11 @@ export default function QuizResult({route, navigation}) {
 
     return(
         <View style={styles.container}>
+             <LinearGradient
+                colors={["#e68321", "#b41e75"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+            >
             <View styles={styles.card}>
                 <Text style={{fontSize: 33, fontWeight: "bold", textAlign: "center", marginBottom: 20}}>Quiz finished!</Text>
                 <Text style={{fontSize: 23, textAlign: "center", marginBottom: 20}}>You Scored {route.params.score}/{route.params.totalQuestions}</Text>
@@ -65,6 +74,7 @@ export default function QuizResult({route, navigation}) {
                 </View>
             </View>
             {displayWinner()}
+            </LinearGradient>
         </View>
     )
 }
@@ -72,11 +82,11 @@ export default function QuizResult({route, navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        margin: 10
+        marginTop: 20,
+        flexDirection: "row",
     },
     card: {
+        alignSelf: "center",
         shadowColor: "black",
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 6,
