@@ -221,7 +221,9 @@ export const sendInvite = async (data, callback) => {
         console.log("condition true")
         callback(true);
     }
-    callback(false);
+    else {
+        callback(false);
+    }
 }
 
 export const acceptInviteRequest = async (id) => {
