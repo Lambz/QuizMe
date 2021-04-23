@@ -1,19 +1,33 @@
 import React, { useState } from "react";
-import { Button, RefreshControl, StyleSheet, Text, Image, View, ScrollView, Dimensions } from "react-native";
+import {
+    Button,
+    RefreshControl,
+    StyleSheet,
+    Text,
+    Image,
+    View,
+    ScrollView,
+    Dimensions,
+    Animated,
+} from "react-native";
 import { useFocusEffect } from "@react-navigation/core";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { AuthSession, WebBrowser, Linking } from "expo";
 import QuizItem from "./subcomponents/QuizItem";
 import { getCookies, storeSetCookies } from "../Utils";
 import { fetchAllQuizes } from "../networking/DatabaseCommunications";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
+import { SearchBar } from "react-native-elements";
 
-const {width: screenWidth} = Dimensions.get('window');
+const { width: screenWidth } = Dimensions.get("window");
 
 export default function Home({ route }) {
+    const [quizData, setQuizData] = useState([]);
     const [quizes, setQuizes] = useState([]);
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [isLoading, setLoading] = useState(true);
+    const [isSearchBarVisible, setSearchBarVisible] = useState(false);
+    const [searchText, setSearchText] = useState("");
     const addClicked = () => {
         route.params.moveTo("Create");
     };
@@ -24,6 +38,13 @@ export default function Home({ route }) {
     const resultsClicked = () => {
         route.params.moveTo("Results");
     };
+
+    const visibleHandler = () => {
+        let currentVisible = isSearchBarVisible;
+        console.log(currentVisible);
+        setSearchBarVisible(!currentVisible);
+    };
+
     const checkLogin = async () => {
         const cookie = await getCookies();
         let items = null;
@@ -31,9 +52,13 @@ export default function Home({ route }) {
             setLoggedIn(true);
             items = (
                 <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+                    <TouchableOpacity onPress={visibleHandler}>
+                        <Feather name="search" size={20} color="#007AFF" />
+                    </TouchableOpacity>
+
                     <TouchableOpacity
                         onPress={resultsClicked}
-                        style={{ marginRight: 10 }}
+                        style={{ marginHorizontal: 10 }}
                     >
                         <MaterialCommunityIcons
                             name="clipboard-check-multiple-outline"
@@ -72,6 +97,7 @@ export default function Home({ route }) {
     );
 
     const quizesCallback = (json) => {
+        setQuizData(json);
         setQuizes(json);
     };
 
@@ -81,7 +107,7 @@ export default function Home({ route }) {
     }
 
     const quizClicked = (quiz) => {
-        console.log(quiz);
+        // console.log(quiz);
         route.params.moveTo("QuizDetail", { quiz: quiz });
     };
 
@@ -89,9 +115,32 @@ export default function Home({ route }) {
         route.params.moveTo("SendChallenge", { quiz: item });
     };
 
+    const searchChangeTextHandler = (text) => {
+        setSearchText(text);
+        let filtered = quizData.filter((quiz) => quiz.name.includes(text));
+        setQuizes(filtered);
+    };
+
+    const showSearchbar = () => {
+        console.log("showing", isSearchBarVisible);
+        if (isSearchBarVisible) {
+            return (
+                <Animated.View>
+                    <SearchBar
+                        placeholder="Search Quizzes"
+                        value={searchText}
+                        platform="ios"
+                        onChangeText={searchChangeTextHandler}
+                        onCancel={() => setSearchBarVisible(false)}
+                    />
+                </Animated.View>
+            );
+        }
+    };
     return (
         <View style={styles.container}>
             {/* <Button title="Login" onPress={sendRequest} /> */}
+            {showSearchbar()}
             <FlatList
                 data={quizes}
                 renderItem={({ item }) => (
@@ -141,6 +190,6 @@ const styles = StyleSheet.create({
         height: 80,
         width: screenWidth - 20,
         backgroundColor: "#f8f8f8",
-        flexDirection: "row"
+        flexDirection: "row",
     },
 });
