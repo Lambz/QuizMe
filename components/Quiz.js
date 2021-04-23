@@ -155,7 +155,7 @@ export default function Quiz({ navigation, route }) {
                     score: currentScore,
                 });
                 navigation.navigate("QuizResult", {
-                    score: score,
+                    score: currentScore,
                     totalQuestions: route.params.quiz.questions.length,
                     resetQuiz: resetQuiz,
                 });

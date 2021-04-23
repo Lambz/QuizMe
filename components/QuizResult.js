@@ -38,7 +38,6 @@ export default function QuizResult({ route, navigation }) {
             return (
                 <View
                     style={{
-                        zIndex: -1,
                         position: "absolute",
                         height: "100%",
                         width: "100%",
@@ -46,7 +45,6 @@ export default function QuizResult({ route, navigation }) {
                 >
                     <Image
                         style={{
-                            zIndex: -1,
                             height: "100%",
                             width: "100%",
                         }}
@@ -65,6 +63,7 @@ export default function QuizResult({ route, navigation }) {
                 end={{ x: 1, y: 1 }}
                 style={{ paddingTop: 50, width: "100%" }}
             >
+                {displayWinner()}
                 <View styles={styles.card}>
                     <Text
                         style={{
@@ -112,7 +111,6 @@ export default function QuizResult({ route, navigation }) {
                         </TouchableOpacity>
                     </View>
                 </View>
-                {displayWinner()}
             </LinearGradient>
         </View>
     );
