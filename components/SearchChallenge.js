@@ -12,7 +12,7 @@ export default function ({ route, navigation }) {
     const [isLoading, setLoading] = useState([]);
 
     let searchText = "";
-
+    console.log(route.params.id);
     if (isLoading) {
         fetchAllQuizesForChallenge((data) => {
             if (data) {

@@ -8,10 +8,9 @@ export default function LeaderBoard({route}) {
     const [dashboard, setDashboard] = useState([]);
     
     const userDetails = (item) => {
-        console.log("Updated Dashboard", item.id )
         route.params.moveTo('SearchChallenge', {
             id: item.id,
-            name: item.name
+            name: item.user
         });
     }
 

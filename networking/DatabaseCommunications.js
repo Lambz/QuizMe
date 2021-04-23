@@ -217,10 +217,13 @@ export const getInvitesRequest = async (callback) => {
 
 export const sendInvite = async (data, callback) => {
     let json = await postRequest(`${API_LINK}/user/sendInvite`, data);
-    if(json["Message"] == "Invite Sent") {
+    if(json["Message"]) {
+        console.log("condition true")
         callback(true);
     }
-    callback(false);
+    else {
+        callback(false);
+    }
 }
 
 export const acceptInviteRequest = async (id) => {
