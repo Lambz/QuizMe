@@ -9,7 +9,7 @@ const {width: screenWidth} = Dimensions.get("window");
 let imageTimer = true;
 
 export default function QuizResult({route, navigation}) {
-
+    const noOfQuestions = route.params.quiz.questions.length;
     async function playSound(audio) {
         console.log(audio);
         const { sound } = await Audio.Sound.createAsync(audio);
@@ -19,7 +19,7 @@ export default function QuizResult({route, navigation}) {
     }
 
     const displayWinner = () => {
-        if (imageTimer && route.params.score / route.params.totalQuestions > 0.1) {
+        if (imageTimer && route.params.score /  noOfQuestions > 0.1) {
             playSound(sounds.winner);
             return (
                 <View
@@ -43,6 +43,10 @@ export default function QuizResult({route, navigation}) {
         }
     };
 
+    const playAgain = () => {
+        navigation.navigate('Quiz', {quiz: route.params.quiz});
+    }
+
     return(
         <View style={styles.container}>
              <LinearGradient
@@ -52,7 +56,7 @@ export default function QuizResult({route, navigation}) {
             >
             <View styles={styles.card}>
                 <Text style={{fontSize: 33, fontWeight: "bold", textAlign: "center", marginBottom: 20}}>Quiz finished!</Text>
-                <Text style={{fontSize: 23, textAlign: "center", marginBottom: 20}}>You Scored {route.params.score}/{route.params.totalQuestions}</Text>
+                <Text style={{fontSize: 23, textAlign: "center", marginBottom: 20}}>You Scored {route.params.score}/{noOfQuestions}</Text>
                 <View style={styles.button}>
                     <TouchableOpacity style={{
                                 paddingVertical: 10,
@@ -83,7 +87,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 20,
-        flexDirection: "row",
+        justifyContent: "space-around"
+        // flexDirection: "row",
     },
     card: {
         alignSelf: "center",
@@ -97,7 +102,7 @@ const styles = StyleSheet.create({
         margin: 10,
         height: 300,
         width: 400,
-        backgroundColor: "#f8f8f8",
+        backgroundColor: "#f8f8f8"
     },
     button: {
         flexDirection: "row",

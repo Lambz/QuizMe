@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { fetchAllQuizesForChallenge } from '../networking/DatabaseCommunications';
 import { QuizItem } from './subcomponents/QuizItem';
 
 let isLoading = true;
-
+// let quizzes = [];
 export default function({route, navigation}) {
     const [quizzes, setQuizzes] = useState([]);
     
@@ -16,10 +16,9 @@ export default function({route, navigation}) {
         fetchAllQuizesForChallenge((data) => {
             if(data) {
                 isLoading = false;
-                setQuizzes(data);
-
+                console.log(data);
+                // setQuizzes(data);
             }
-            
         }) 
     }
     // useFocusEffect(

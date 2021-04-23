@@ -145,7 +145,7 @@ export default function Quiz({ navigation, route }) {
                 });
                 navigation.navigate('QuizResult', {
                     score: score,
-                    totalQuestions: route.params.quiz.questions.length
+                    quiz: route.params.quiz
                 })
             }
         }, 1000);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, RefreshControl, StyleSheet, Text, View } from "react-native";
+import { Button, RefreshControl, StyleSheet, Text, Image, View, ScrollView, Dimensions } from "react-native";
 import { useFocusEffect } from "@react-navigation/core";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { AuthSession, WebBrowser, Linking } from "expo";
@@ -7,6 +7,9 @@ import QuizItem from "./subcomponents/QuizItem";
 import { getCookies, storeSetCookies } from "../Utils";
 import { fetchAllQuizes } from "../networking/DatabaseCommunications";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+const {width: screenWidth} = Dimensions.get('window');
+
 export default function Home({ route }) {
     const [quizes, setQuizes] = useState([]);
     const [isLoggedIn, setLoggedIn] = useState(false);
@@ -85,8 +88,18 @@ export default function Home({ route }) {
     const moveToChallengers = (item) => {
         route.params.moveTo("SendChallenge", { quiz: item });
     };
+
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
+            <Text style={{fontSize: 33, fontWeight: "bold", marginBottom: 20}}>Welcome User</Text>
+            <View style={[styles.card, {backgroundColor: "#ff6f52"}]}>
+                <Image source={require('../assets/badges/cadet.png')}></Image>
+                <Text style={{fontSize: 23, marginBottom: 10}}>Rank Cadet</Text>
+            </View>
+            <View style={[styles.card, {backgroundColor: "#e5e85a", marginBottom: 10}]}>
+                <Text style={{fontSize: 23}}>Games Played</Text>
+            </View>
+            <Text style={{fontSize: 33, fontWeight: "bold", marginBottom: 20}}>Explore Quizzes</Text>
             {/* <Button title="Login" onPress={sendRequest} /> */}
             <FlatList
                 data={quizes}
@@ -115,7 +128,7 @@ export default function Home({ route }) {
                     <RefreshControl onRefresh={() => setLoading(true)} />
                 }
             />
-        </View>
+        </ScrollView>
     );
 }
 
@@ -123,5 +136,20 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#fff",
+    },
+    card: {
+        alignSelf: "center",
+        shadowColor: "black",
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 6,
+        shadowOpacity: 0.26,
+        elevation: 8,
+        padding: 20,
+        borderRadius: 10,
+        margin: 10,
+        height: 80,
+        width: screenWidth - 20,
+        backgroundColor: "#f8f8f8",
+        flexDirection: "row"
     },
 });
