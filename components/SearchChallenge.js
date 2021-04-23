@@ -47,7 +47,11 @@ export default function ({ route, navigation }) {
 
     return (
         <View style={styles.container}>
-            <SearchBar placeholder="Search Quizzes" value={searchText} />
+            <SearchBar
+                placeholder="Search Quizzes"
+                value={searchText}
+                platform="ios"
+            />
             <FlatList
                 data={quizzes}
                 renderItem={({ item }) => (
