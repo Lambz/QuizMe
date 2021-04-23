@@ -29,6 +29,17 @@ export default function Quiz({ navigation, route }) {
         await sound.playAsync();
         await sound.unloadAsync();
     }
+    const resetQuiz = () => {
+        setFinished(false);
+        setCurrentIndex(0);
+        setBgOption1Color("#fff");
+        setBgOption2Color("#fff");
+        setBgOption3Color("#fff");
+        setBgOption4Color("#fff");
+        setScore(0);
+        setQuestion(route.params.quiz.questions[currentIndex].question);
+        setOptions(route.params.quiz.questions[currentIndex].options);
+    };
     React.useEffect(
         () =>
             navigation.addListener("beforeRemove", (e) => {
@@ -143,10 +154,11 @@ export default function Quiz({ navigation, route }) {
                     quiz: route.params.quiz,
                     score: currentScore,
                 });
-                navigation.navigate('QuizResult', {
-                    score: score,
-                    quiz: route.params.quiz
-                })
+                navigation.navigate("QuizResult", {
+                    score: currentScore,
+                    totalQuestions: route.params.quiz.questions.length,
+                    resetQuiz: resetQuiz,
+                });
             }
         }, 1000);
     };

@@ -1,25 +1,28 @@
-import React, { useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, View, FlatList } from "react-native";
 import { SearchBar } from "react-native-elements";
-import { fetchAllQuizesForChallenge } from '../networking/DatabaseCommunications';
-import { QuizItem } from './subcomponents/QuizItem';
+import {
+    fetchAllQuizesForChallenge,
+    fetchQuizByID,
+} from "../networking/DatabaseCommunications";
+import QuizItem from "./subcomponents/QuizItem";
 
-let isLoading = true;
-// let quizzes = [];
-export default function({route, navigation}) {
+// let isLoading = true;
+
+export default function ({ route, navigation }) {
     const [quizzes, setQuizzes] = useState([]);
-    
+    const [isLoading, setLoading] = useState([]);
+
     let searchText = "";
 
-    if(isLoading) {
+    if (isLoading) {
         fetchAllQuizesForChallenge((data) => {
-            if(data) {
-                isLoading = false;
-                console.log(data);
-                // setQuizzes(data);
+            if (data) {
+                // isLoading = false;
+                setQuizzes(data);
             }
-        }) 
+        });
+        setLoading(false);
     }
     // useFocusEffect(
     //     React.useCallback(() => {
@@ -27,35 +30,42 @@ export default function({route, navigation}) {
     //             if(data) {
     //                 setQuizzes(data);
     //             }
-                
+
     //         })
     //     }, [])
     // )
 
-    const itemClicked = (item) => {
-        
-    }
+    const quizClicked = (item) => {};
 
     const emptyQuiz = () => {
-        return(
+        return (
             <View style={styles.emptyList}>
                 <Text style={styles.emptyListText}>No quizzes available</Text>
             </View>
-        )
-    }
+        );
+    };
 
-    return(
+    return (
         <View style={styles.container}>
             <SearchBar
                 placeholder="Search Quizzes"
                 value={searchText}
-                
+                platform="ios"
             />
-            <FlatList data={quizzes} renderItem={({item}) => (
-                <QuizItem item={item} quizClicked={itemClicked}></QuizItem>
-            )} ListEmptyComponent={emptyQuiz}></FlatList>
+            <FlatList
+                data={quizzes}
+                renderItem={({ item }) => (
+                    <QuizItem
+                        item={item}
+                        quizClicked={quizClicked}
+                        moveToChallengers={null}
+                        isLoggedIn={false}
+                    />
+                )}
+                ListEmptyComponent={emptyQuiz}
+            />
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -63,10 +73,10 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     emptyList: {
-        textAlign: "center"
+        textAlign: "center",
     },
     emptyListText: {
         fontSize: 22,
-        textAlign: "center"
-    }
-})
+        textAlign: "center",
+    },
+});

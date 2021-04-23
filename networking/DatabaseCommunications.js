@@ -25,7 +25,6 @@ export const fetchAllQuizesForChallenge = async (callback) => {
     callback(json);
 };
 
-
 export const fetchCategoriesWithQuiz = async (callback) => {
     // const data = await fetchRequest(`${API_LINK}/quiz/categories`);
     // const categoryData = data.Categories;
@@ -87,7 +86,7 @@ export const getQuizesByUser = async (callback) => {
 
 export const getDashBoard = (callback) => {
     let json = fetchRequest(`${API_LINK}/leaderboard/`);
-    json.then(data => callback(data));
+    json.then((data) => callback(data));
 };
 
 export const updateQuestionRequest = async (data, callback) => {

@@ -2,7 +2,6 @@ import React from "react";
 import {
     StyleSheet,
     Text,
-    View,
     Image,
     Dimensions,
     TouchableOpacity,
@@ -16,6 +15,7 @@ export default function QuizItem({
     moveToChallengers,
     isLoggedIn,
 }) {
+    console.log("item: ", item);
     const showChallengeButton = () => {
         if (isLoggedIn) {
             return (
