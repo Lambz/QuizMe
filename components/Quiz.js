@@ -20,14 +20,15 @@ export default function Quiz({ navigation, route }) {
         route.params.quiz.questions[currentIndex].options
     );
     async function playSound(audio) {
-        console.log(audio);
-        console.log("Loading Sound");
-        const { sound } = await Audio.Sound.createAsync(audio);
-        // console.log(sound);
-        // setSound(sound);
-        console.log("Playing Sound");
-        await sound.playAsync();
-        await sound.unloadAsync();
+        try {
+            const soundObject = new Audio.Sound();
+            await soundObject.loadAsync(audio);
+            soundObject.setPositionAsync(0);
+            soundObject.setIsLoopingAsync(false);
+            await soundObject.playAsync();
+        } catch (error) {
+            console.log("Error Playing: ", error);
+        }
     }
     const resetQuiz = () => {
         setFinished(false);

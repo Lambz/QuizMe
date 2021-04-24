@@ -62,7 +62,7 @@ export default function Dashboard({ navigation }) {
                 <Tab.Screen
                     name="LeaderBoard"
                     component={LeaderBoard}
-                    initialParams={{ 
+                    initialParams={{
                         changeHeader: changeHeader,
                         moveTo: moveTo,
                     }}

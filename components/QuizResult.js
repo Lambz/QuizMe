@@ -17,10 +17,15 @@ let imageTimer = true;
 
 export default function QuizResult({ route, navigation }) {
     async function playSound(audio) {
-        console.log(audio);
-        const { sound } = await Audio.Sound.createAsync(audio);
-        await sound.playAsync();
-        await sound.unloadAsync();
+        try {
+            const soundObject = new Audio.Sound();
+            await soundObject.loadAsync(audio);
+            soundObject.setPositionAsync(0);
+            soundObject.setIsLoopingAsync(false);
+            await soundObject.playAsync();
+        } catch (error) {
+            console.log("Error Playing: ", error);
+        }
         imageTimer = false;
     }
 
@@ -32,7 +37,7 @@ export default function QuizResult({ route, navigation }) {
     const displayWinner = () => {
         if (
             imageTimer &&
-            route.params.score / route.params.totalQuestions > 0.1
+            route.params.score / route.params.totalQuestions > 0.5
         ) {
             playSound(sounds.winner);
             return (
