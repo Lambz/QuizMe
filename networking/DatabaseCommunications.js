@@ -8,7 +8,7 @@ import {
 import { call } from "react-native-reanimated";
 const Networking = NativeModules.Networking;
 
-const API_LINK = "http://localhost:3000";
+const API_LINK = "http://192.168.2.96:3000";
 
 export const addQuiz = async (quiz, callback) => {
     let json = await postRequest(`${API_LINK}/quiz/add`, quiz);
@@ -214,17 +214,15 @@ export const getInvitesRequest = async (callback) => {
     callback(null);
 };
 
-
 export const sendInvite = async (data, callback) => {
     let json = await postRequest(`${API_LINK}/user/sendInvite`, data);
-    if(json["Message"]) {
-        console.log("condition true")
+    if (json["Message"]) {
+        console.log("condition true");
         callback(true);
-    }
-    else {
+    } else {
         callback(false);
     }
-}
+};
 
 export const acceptInviteRequest = async (id) => {
     fetchRequest(`${API_LINK}/user/acceptInvite/${id}`);

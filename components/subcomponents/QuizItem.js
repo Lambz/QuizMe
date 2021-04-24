@@ -65,6 +65,7 @@ export default function QuizItem({
                         color: "#fff",
                         fontSize: 20,
                         fontWeight: "bold",
+                        maxWidth: "60%",
                     }}
                 >
                     {item.name}
